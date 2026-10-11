@@ -5,699 +5,677 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexamind.ai | Masa depan kamu yang menentukan, pilihan ada ditanganmu!</title>
     <meta name="description" content="Temukan berbagai produk digital edukasi anak, tools AI, dan panduan cuan terlengkap dari Nexamind.ai.">
-    
-    <!-- Fonts -->
+    <meta name="theme-color" content="#0a63ee">
+    <link rel="icon" type="image/png" href="./assets/favicon.png">
+    <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+    <script>document.documentElement.classList.add('js');</script>
+
+    <!-- Fonts: Plus Jakarta Sans (UI & body) + Cormorant (italic display accents) + Outfit (logo wordmark) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Alpine.js (for interactions) -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@1,500;1,600&family=Outfit:wght@300;400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Tailwind Config for Custom Colors and Fonts -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+
+    <!-- Alpine.js (for interactions) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
+
+    <!-- Tailwind Config: brand colors unchanged -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        heading: ['Outfit', 'sans-serif'],
-                        body: ['Plus Jakarta Sans', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                        serif: ['Cormorant', 'Georgia', 'serif'],
                     },
                     colors: {
-                        brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9', // Primary Cyan/Blue
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
+                        // Palette sampled from the Nexamind.ai logo
+                        brand: { // Royal blue (left loop)
+                            50: '#eff5ff',
+                            100: '#dce8fd',
+                            200: '#b8d0fb',
+                            300: '#7aa9f7',
+                            400: '#3f83f2',
+                            500: '#0a63ee',
+                            600: '#0852c7',
+                            700: '#0a44a0',
+                            800: '#0e3a80',
+                            900: '#112f63',
                         },
-                        accent: {
-                            light: '#e0e7ff',
-                            DEFAULT: '#6366f1', // Secondary Indigo
-                            dark: '#4338ca',
-                        }
-                    },
-                    animation: {
-                        'blob': 'blob 7s infinite',
-                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
-                    },
-                    keyframes: {
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        aqua: { // Teal + cyan glow (center)
+                            50: '#ecfbfc',
+                            100: '#cff4f6',
+                            200: '#a3e8ee',
+                            300: '#0fe6db',
+                            400: '#22c3cf',
+                            500: '#1ca4b9',
+                            600: '#1a8ba0',
+                            700: '#2c778a',
                         },
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
+                        accent: { // Violet (right loop)
+                            light: '#ece2fd',
+                            DEFAULT: '#a16eec',
+                            dark: '#7340c4',
+                        },
+                        ink: '#1e2633',
+                    },
+                    boxShadow: {
+                        soft: '0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -12px rgba(15, 23, 42, 0.12)',
+                        lift: '0 2px 4px rgba(15, 23, 42, 0.04), 0 24px 48px -20px rgba(15, 23, 42, 0.22)',
+                    },
+                    maxWidth: {
+                        prose: '38rem',
+                    },
                 }
             }
         }
     </script>
 
-    <!-- Custom CSS for Glassmorphism & Effects -->
     <style>
+        :root {
+            --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+        }
         body {
-            background-color: #fafafa;
-            color: #1a202c;
+            background-color: #fbfcfe;
+            color: #1e2633;
             overflow-x: hidden;
+            text-rendering: optimizeLegibility;
+        }
+        [x-cloak] { display: none !important; }
+
+        /* Quiet backdrop: a hairline grid fading out under two soft brand glows */
+        .backdrop-grid {
+            background-image:
+                linear-gradient(to right, rgba(15, 23, 42, 0.045) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.045) 1px, transparent 1px);
+            background-size: 56px 56px;
+            -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
+                    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
         }
 
-        /* Abstract Gradient Mesh Background */
-        .bg-mesh {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            background-color: #ffffff;
-            background-image: 
-                radial-gradient(at 40% 20%, hsla(198,100%,74%,0.15) 0px, transparent 50%),
-                radial-gradient(at 80% 0%, hsla(189,100%,56%,0.15) 0px, transparent 50%),
-                radial-gradient(at 0% 50%, hsla(240,100%,70%,0.1) 0px, transparent 50%),
-                radial-gradient(at 80% 50%, hsla(200,100%,70%,0.1) 0px, transparent 50%),
-                radial-gradient(at 0% 100%, hsla(190,100%,76%,0.15) 0px, transparent 50%),
-                radial-gradient(at 80% 100%, hsla(240,100%,70%,0.1) 0px, transparent 50%),
-                radial-gradient(at 0% 0%, hsla(198,100%,74%,0.1) 0px, transparent 50%);
-            filter: blur(40px);
-        }
-
-        /* Glassmorphism Utilities */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
-        }
-        
         .glass-nav {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+            background: rgba(251, 252, 254, 0.78);
+            -webkit-backdrop-filter: saturate(160%) blur(16px);
+                    backdrop-filter: saturate(160%) blur(16px);
         }
 
-        /* Glowing Effects */
-        .glow-text {
-            text-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+        .text-gradient {
+            background-image: linear-gradient(100deg, #0a63ee 0%, #1a8ba0 50%, #8b55e0 100%);
+            -webkit-background-clip: text;
+                    background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        
-        .btn-glow {
+
+        /* Gradient hairline border */
+        .ring-gradient {
             position: relative;
+            isolation: isolate;
         }
-        .btn-glow::before {
+        .ring-gradient::before {
             content: '';
             position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
-            background: linear-gradient(45deg, #0ea5e9, #6366f1, #0ea5e9);
-            z-index: -1;
-            filter: blur(10px);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            inset: 0;
+            padding: 1px;
             border-radius: inherit;
-        }
-        .btn-glow:hover::before {
-            opacity: 0.6;
+            background: linear-gradient(135deg, rgba(10, 99, 238, 0.55), rgba(28, 164, 185, 0.5) 50%, rgba(161, 110, 236, 0.55));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+                    mask-composite: exclude;
+            pointer-events: none;
+            z-index: -1;
         }
 
-        /* Scroll Animations (Intersection Observer approach via classes) */
-        .reveal {
+        /* Visible keyboard focus everywhere */
+        :focus-visible {
+            outline: 2px solid #0a63ee;
+            outline-offset: 3px;
+            border-radius: 10px;
+        }
+
+        /* Scroll reveal: subtle 12px rise, only when JS is running */
+        .js .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+            transform: translateY(12px);
+            transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out);
         }
-        .reveal.active {
+        .js .reveal.is-visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: none;
         }
-        
-        /* Respect prefers-reduced-motion */
+
+        /* Logo wordmark, matching the logo lettering */
+        .wordmark { font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.01em; }
+
+        /* FAQ disclosure */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] .faq-chevron { transform: rotate(45deg); }
+
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
-            .reveal, .reveal.active {
-                transition: none;
-                opacity: 1;
-                transform: none;
+            .js .reveal { opacity: 1; transform: none; transition: none; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
-            .animate-blob { animation: none; }
-        }
-        
-        /* Utility for text gradients */
-        .text-gradient {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-image: linear-gradient(to right, #0ea5e9, #6366f1);
         }
     </style>
 </head>
-<body class="font-body antialiased relative">
+<body class="font-sans antialiased relative">
 
-    <!-- Background Decoration -->
-    <div class="bg-mesh"></div>
+    <a href="#konten" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-3 focus:rounded-xl focus:bg-ink focus:text-white focus:shadow-lift">Lewati ke konten utama</a>
 
-    <!-- Navbar Sticky -->
-    <nav x-data="{ mobileMenuOpen: false }" class="fixed w-full top-0 z-50 glass-nav transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center">
-                    <a href="#" class="font-heading font-extrabold text-2xl tracking-tight text-gray-900 flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-400 to-accent flex items-center justify-center text-white text-xl">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                            </svg>
-                        </div>
-                        Nexamind<span class="text-brand-500">.ai</span>
-                    </a>
-                </div>
+    <!-- Navbar -->
+    <header x-data="{ open: false }" @keydown.escape.window="open = false" class="fixed inset-x-0 top-0 z-50 glass-nav border-b border-slate-900/[0.06]">
+        <nav class="max-w-6xl mx-auto px-5 sm:px-8" aria-label="Navigasi utama">
+            <div class="flex justify-between items-center h-16 md:h-[72px]">
+                <a href="#" class="flex items-center gap-2.5" aria-label="Nexamind.ai, ke atas halaman">
+                    <img src="./assets/nexamind-mark.png" alt="" width="359" height="220" class="h-8 w-auto">
+                    <span class="wordmark text-[1.35rem] leading-none text-ink"><span class="font-bold">nexa</span><span class="font-light">mind</span><span class="font-normal text-aqua-700">.ai</span></span>
+                </a>
 
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#tentang" class="text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm uppercase tracking-wider">Tentang</a>
-                    <a href="#keunggulan" class="text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm uppercase tracking-wider">Keunggulan</a>
-                    <a href="#produk" class="text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm uppercase tracking-wider">Produk</a>
-                    <a href="#cara-order" class="text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm uppercase tracking-wider">Cara Beli</a>
-                    <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" class="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2.5 rounded-full font-semibold transition-all shadow-lg hover:shadow-xl btn-glow flex items-center gap-2 text-sm">
+                <!-- Desktop -->
+                <div class="hidden md:flex items-center gap-1">
+                    <a href="#tentang" class="px-4 py-2 rounded-full text-[15px] font-medium text-slate-600 hover:text-ink hover:bg-slate-900/[0.04] transition-colors duration-200">Tentang</a>
+                    <a href="#keunggulan" class="px-4 py-2 rounded-full text-[15px] font-medium text-slate-600 hover:text-ink hover:bg-slate-900/[0.04] transition-colors duration-200">Keunggulan</a>
+                    <a href="#produk" class="px-4 py-2 rounded-full text-[15px] font-medium text-slate-600 hover:text-ink hover:bg-slate-900/[0.04] transition-colors duration-200">Produk</a>
+                    <a href="#cara-order" class="px-4 py-2 rounded-full text-[15px] font-medium text-slate-600 hover:text-ink hover:bg-slate-900/[0.04] transition-colors duration-200">Cara Beli</a>
+                    <a href="#faq" class="px-4 py-2 rounded-full text-[15px] font-medium text-slate-600 hover:text-ink hover:bg-slate-900/[0.04] transition-colors duration-200">FAQ</a>
+                    <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" class="ml-3 inline-flex items-center gap-2 h-11 px-5 rounded-full bg-ink text-white text-[15px] font-semibold hover:bg-slate-800 transition-colors duration-200 shadow-soft">
                         Beli Sekarang
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
                     </a>
                 </div>
 
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="text-gray-700 hover:text-brand-600 focus:outline-none p-2">
-                        <svg x-show="!mobileMenuOpen" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        <svg x-show="mobileMenuOpen" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: none;">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
+                <!-- Mobile toggle -->
+                <button @click="open = !open" type="button" class="md:hidden -mr-2 w-11 h-11 inline-flex items-center justify-center rounded-full text-ink hover:bg-slate-900/[0.05] transition-colors" :aria-expanded="open.toString()" aria-controls="menu-mobile" aria-label="Buka menu">
+                    <svg x-show="!open" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" /></svg>
+                    <svg x-show="open" x-cloak class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
             </div>
-        </div>
+        </nav>
 
-        <!-- Mobile Menu -->
-        <div x-show="mobileMenuOpen" 
+        <!-- Mobile menu -->
+        <div id="menu-mobile" x-show="open" x-cloak
              x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 -translate-y-2"
+             x-transition:enter-start="opacity-0 -translate-y-1"
              x-transition:enter-end="opacity-100 translate-y-0"
              x-transition:leave="transition ease-in duration-150"
-             x-transition:leave-start="opacity-100 translate-y-0"
-             x-transition:leave-end="opacity-0 -translate-y-2"
-             class="md:hidden glass-card absolute w-full border-t border-gray-200/50 shadow-xl" style="display: none;">
-            <div class="px-4 pt-2 pb-6 space-y-1">
-                <a @click="mobileMenuOpen = false" href="#tentang" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50/50">Tentang</a>
-                <a @click="mobileMenuOpen = false" href="#keunggulan" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50/50">Keunggulan</a>
-                <a @click="mobileMenuOpen = false" href="#produk" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50/50">Produk</a>
-                <a @click="mobileMenuOpen = false" href="#cara-order" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50/50">Cara Beli</a>
-                <a href="https://lynk.id/zulnandigipreneur" target="_blank" class="block mt-4 px-3 py-3 text-center rounded-xl text-base font-bold text-white bg-gradient-to-r from-brand-500 to-accent">Beli Sekarang</a>
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="md:hidden border-t border-slate-900/[0.06] bg-white/95 backdrop-blur-xl shadow-lift">
+            <div class="px-5 pt-3 pb-6 flex flex-col">
+                <a @click="open = false" href="#tentang" class="py-3.5 text-base font-medium text-slate-700 border-b border-slate-100">Tentang</a>
+                <a @click="open = false" href="#keunggulan" class="py-3.5 text-base font-medium text-slate-700 border-b border-slate-100">Keunggulan</a>
+                <a @click="open = false" href="#produk" class="py-3.5 text-base font-medium text-slate-700 border-b border-slate-100">Produk</a>
+                <a @click="open = false" href="#cara-order" class="py-3.5 text-base font-medium text-slate-700 border-b border-slate-100">Cara Beli</a>
+                <a @click="open = false" href="#faq" class="py-3.5 text-base font-medium text-slate-700">FAQ</a>
+                <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" class="mt-4 h-12 inline-flex items-center justify-center rounded-full text-base font-semibold text-white bg-ink">Beli Sekarang</a>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <!-- Hero Section -->
-    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center max-w-4xl mx-auto reveal active">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-brand-200 text-brand-700 text-sm font-semibold mb-6 shadow-sm">
-                    <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-                    Masa Depan Edukasi & Bisnis Digital
-                </div>
-                <h1 class="text-5xl md:text-7xl font-heading font-extrabold text-gray-900 leading-[1.1] mb-6 tracking-tight">
-                    Masa depan kamu yang menentukan, <br class="hidden md:block"/>
-                    <span class="text-gradient glow-text">pilihan ada ditanganmu!</span>
-                </h1>
-                <p class="mt-6 text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                    Ubah cara belajar anak menjadi menyenangkan dan raih peluang cuan dari rumah dengan bundel produk digital & tools AI premium kami.
+    <main id="konten">
+
+    <!-- Hero -->
+    <section class="relative pt-36 pb-12 md:pt-48 md:pb-16 overflow-hidden">
+        <div class="absolute inset-0 backdrop-grid pointer-events-none" aria-hidden="true"></div>
+        <div class="absolute -top-40 left-1/2 -translate-x-[85%] w-[600px] h-[600px] rounded-full bg-brand-300/30 blur-[120px] pointer-events-none" aria-hidden="true"></div>
+        <div class="absolute -top-56 left-1/2 -translate-x-1/2 w-[420px] h-[420px] rounded-full bg-aqua-300/20 blur-[110px] pointer-events-none" aria-hidden="true"></div>
+        <div class="absolute -top-24 left-1/2 translate-x-[5%] w-[520px] h-[520px] rounded-full bg-accent/25 blur-[120px] pointer-events-none" aria-hidden="true"></div>
+
+        <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
+            <div class="text-center max-w-4xl mx-auto">
+                <p class="inline-flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-full bg-white/80 border border-slate-900/[0.07] shadow-soft text-sm font-medium text-slate-700 mb-8">
+                    <span class="px-2 py-0.5 rounded-full bg-aqua-50 text-aqua-700 text-xs font-semibold">Baru</span>
+                    Masa Depan Edukasi &amp; Bisnis Digital
                 </p>
-                <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="#produk" class="px-8 py-4 rounded-2xl bg-gray-900 text-white font-bold text-lg hover:bg-gray-800 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 btn-glow flex items-center justify-center gap-2">
+                <h1 class="text-[2.5rem] leading-[1.08] sm:text-6xl md:text-7xl md:leading-[1.04] font-bold tracking-[-0.035em] text-ink text-balance">
+                    Masa depan kamu yang menentukan,
+                    <span class="block mt-1 font-serif italic font-semibold tracking-[-0.01em] text-gradient pb-2 text-[1.12em]">pilihan ada ditanganmu!</span>
+                </h1>
+                <p class="mt-6 text-lg md:text-xl leading-relaxed text-slate-600 max-w-2xl mx-auto">
+                    Ubah cara belajar anak menjadi menyenangkan dan raih peluang cuan dari rumah dengan bundel produk digital &amp; tools AI premium kami.
+                </p>
+                <div class="mt-10 flex flex-col sm:flex-row justify-center gap-3">
+                    <a href="#produk" class="group inline-flex items-center justify-center gap-2 h-14 px-8 rounded-full bg-ink text-white font-semibold text-base hover:bg-slate-800 shadow-lift transition-colors duration-200">
                         Lihat Katalog Produk
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 transition-transform duration-200 group-hover:translate-y-0.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
                     </a>
-                    <a href="#tentang" class="px-8 py-4 rounded-2xl glass-card text-gray-800 font-bold text-lg hover:bg-white/90 transition-all hover:-translate-y-1 flex items-center justify-center">
+                    <a href="#tentang" class="inline-flex items-center justify-center h-14 px-8 rounded-full bg-white text-ink font-semibold text-base border border-slate-900/10 hover:border-slate-900/20 hover:bg-slate-50 shadow-soft transition-colors duration-200">
                         Pelajari Lebih Lanjut
                     </a>
                 </div>
-                
-                <!-- Trust Badges -->
-                <div class="mt-16 pt-10 border-t border-gray-200/50">
-                    <p class="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-6">Solusi Tepat Untuk</p>
-                    <div class="flex flex-wrap justify-center gap-6 md:gap-12 opacity-70 grayscale">
-                        <div class="flex items-center gap-2 font-heading font-bold text-xl"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.64-2.25 1.64-1.74 0-2.1-.96-2.17-1.92H8.01c.08 1.8 1.48 3.2 3.1 3.59V20h2.64v-1.73c1.61-.31 2.85-1.45 2.85-3.04 0-2.4-2-3-4.29-3.59z"/></svg> Orang Tua</div>
-                        <div class="flex items-center gap-2 font-heading font-bold text-xl"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72l5 2.73 5-2.73v3.72z"/></svg> Guru TK/PAUD</div>
-                        <div class="flex items-center gap-2 font-heading font-bold text-xl"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg> Digital Creator</div>
-                    </div>
+
+                <!-- Audiences -->
+                <div class="mt-20">
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-[0.2em] mb-6">Solusi tepat untuk</p>
+                    <ul class="flex flex-wrap justify-center gap-3">
+                        <li class="inline-flex items-center gap-2.5 h-11 px-5 rounded-full bg-white/70 border border-slate-900/[0.07] text-slate-700 font-medium">
+                            <svg class="w-5 h-5 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75" /></svg>
+                            Orang Tua
+                        </li>
+                        <li class="inline-flex items-center gap-2.5 h-11 px-5 rounded-full bg-white/70 border border-slate-900/[0.07] text-slate-700 font-medium">
+                            <svg class="w-5 h-5 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" /></svg>
+                            Guru TK/PAUD
+                        </li>
+                        <li class="inline-flex items-center gap-2.5 h-11 px-5 rounded-full bg-white/70 border border-slate-900/[0.07] text-slate-700 font-medium">
+                            <svg class="w-5 h-5 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" /></svg>
+                            Digital Creator
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Tentang Saya -->
-    <section id="tentang" class="py-24 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass-card rounded-3xl p-8 md:p-12 shadow-sm border border-white/60 reveal">
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-                    <div class="md:col-span-5 relative group">
-                        <!-- Futuristic Avatar -->
-                        <div class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-brand-100 to-accent-light relative">
-                            <div class="absolute inset-0 bg-mesh opacity-50"></div>
-                            <!-- KODE ASLI: Pastikan file bernama "profile.jpg" (huruf kecil semua) dan ada di folder yang sama dengan index.html -->
-                            <img src="./profile.jpg" 
-                                 alt="Zulnan - Nexamind.ai" 
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 relative z-10">
-                            <!-- Overlay UI elements for tech feel -->
-                            <div class="absolute top-4 left-4 glass-card px-3 py-1 rounded-full text-xs font-bold text-brand-700 backdrop-blur-md z-20">VERIFIED CREATOR</div>
-                            <div class="absolute bottom-4 right-4 bg-gray-900 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg z-20">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5zM16.5 15a.75.75 0 01.712.513l.394 1.183c.15.447.5.799.948.948l1.183.395a.75.75 0 010 1.422l-1.183.395c-.447.15-.799.5-.948.948l-.395 1.183a.75.75 0 01-1.422 0l-.395-1.183a1.5 1.5 0 00-.948-.948l-1.183-.395a.75.75 0 010-1.422l1.183-.395c.447-.15.799-.5.948-.948l.395-1.183A.75.75 0 0116.5 15z" clip-rule="evenodd" /></svg>
-                            </div>
+    <!-- Tentang -->
+    <section id="tentang" class="py-24 md:py-32 scroll-mt-16" aria-labelledby="tentang-judul">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 items-center reveal">
+                <div class="md:col-span-5">
+                    <figure class="relative">
+                        <div class="aspect-[4/5] rounded-[28px] overflow-hidden bg-gradient-to-br from-brand-100 via-white to-accent-light ring-1 ring-slate-900/[0.06] shadow-lift relative">
+                            <!-- Foto profil: profile.jpg di folder yang sama dengan index.html -->
+                            <img src="./profile.jpg" alt="Zulnan, pendiri Nexamind.ai" width="848" height="1264" loading="lazy" decoding="async"
+                                 onerror="this.remove()"
+                                 class="absolute inset-0 w-full h-full object-cover object-[50%_18%] z-10">
+                            <span class="absolute inset-0 flex items-center justify-center font-serif italic text-[9rem] leading-none text-gradient select-none" aria-hidden="true">Z</span>
                         </div>
+                        <figcaption class="absolute -bottom-5 left-6 right-6 sm:right-auto flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-900/[0.06] shadow-lift z-20">
+                            <span class="w-9 h-9 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5" aria-hidden="true"><path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" /></svg>
+                            </span>
+                            <span>
+                                <span class="block text-sm font-semibold text-ink">Verified Creator</span>
+                                <span class="block text-xs text-slate-500">Pendiri Nexamind.ai</span>
+                            </span>
+                        </figcaption>
+                    </figure>
+                </div>
+
+                <div class="md:col-span-7 pt-6 md:pt-0">
+                    <p class="text-xs font-semibold tracking-[0.2em] uppercase text-brand-700 mb-4">Tentang</p>
+                    <h2 id="tentang-judul" class="text-3xl md:text-[2.75rem] md:leading-[1.12] font-bold tracking-[-0.03em] text-ink text-balance">
+                        Halo, saya di balik <span class="font-serif italic font-semibold text-gradient text-[1.12em]">Nexamind.ai</span>
+                    </h2>
+                    <div class="mt-6 space-y-5 text-lg leading-relaxed text-slate-600 max-w-prose">
+                        <p>Misi saya sederhana: membuat edukasi anak tidak membosankan dan membantu orang tua, guru, serta kreator pemula menemukan cara baru untuk produktif sekaligus menghasilkan cuan dari rumah.</p>
+                        <p>Melalui Nexamind.ai, saya mengkurasi dan menciptakan ribuan produk digital&mdash;mulai dari worksheet, game Islami, hingga tools AI pembuat soal&mdash;yang siap pakai. Tidak perlu pusing bikin dari nol, pilihan masa depan ada di tanganmu!</p>
                     </div>
-                    <div class="md:col-span-7 space-y-6">
-                        <h2 class="text-3xl md:text-4xl font-heading font-bold text-gray-900">Halo, Saya di balik <span class="text-brand-500">Nexamind.ai</span></h2>
-                        <p class="text-lg text-gray-600 leading-relaxed">
-                            Misi saya sederhana: membuat edukasi anak tidak membosankan dan membantu orang tua, guru, serta kreator pemula menemukan cara baru untuk produktif sekaligus menghasilkan cuan dari rumah.
-                        </p>
-                        <p class="text-lg text-gray-600 leading-relaxed">
-                            Melalui Nexamind.ai, saya mengkurasi dan menciptakan ribuan produk digital—mulai dari worksheet, game Islami, hingga tools AI pembuat soal—yang siap pakai. Tidak perlu pusing bikin dari nol, pilihan masa depan ada di tanganmu!
-                        </p>
-                        <div class="pt-4 grid grid-cols-2 gap-4">
-                            <div class="glass-card p-4 rounded-xl border-l-4 border-l-brand-500">
-                                <p class="text-3xl font-heading font-bold text-gray-900">700+</p>
-                                <p class="text-sm font-medium text-gray-500 mt-1">Produk Digital Tersedia</p>
-                            </div>
-                            <div class="glass-card p-4 rounded-xl border-l-4 border-l-accent">
-                                <p class="text-3xl font-heading font-bold text-gray-900">All-in-1</p>
-                                <p class="text-sm font-medium text-gray-500 mt-1">Edukasi & Bisnis</p>
-                            </div>
+                    <dl class="mt-10 grid grid-cols-2 divide-x divide-slate-900/[0.08] border-y border-slate-900/[0.08]">
+                        <div class="py-6 pr-6">
+                            <dt class="text-sm text-slate-500">Produk digital tersedia</dt>
+                            <dd class="mt-1 text-4xl font-bold tracking-tight text-ink">700<span class="text-aqua-500">+</span></dd>
                         </div>
-                    </div>
+                        <div class="py-6 pl-6">
+                            <dt class="text-sm text-slate-500">Edukasi &amp; bisnis</dt>
+                            <dd class="mt-1 text-4xl font-bold tracking-tight text-ink">All-in-1</dd>
+                        </div>
+                    </dl>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Keunggulan (Bento Grid) -->
-    <section id="keunggulan" class="py-24 relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-sm font-bold tracking-widest text-brand-500 uppercase mb-3">Mengapa Memilih Kami</h2>
-                <h3 class="text-3xl md:text-5xl font-heading font-bold text-gray-900">Kelebihan Nexamind.ai</h3>
+    <section id="keunggulan" class="py-24 md:py-32 scroll-mt-16 bg-white border-y border-slate-900/[0.06]" aria-labelledby="keunggulan-judul">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+            <div class="max-w-2xl mb-14 reveal">
+                <p class="text-xs font-semibold tracking-[0.2em] uppercase text-brand-700 mb-4">Mengapa memilih kami</p>
+                <h2 id="keunggulan-judul" class="text-3xl md:text-5xl md:leading-[1.08] font-bold tracking-[-0.03em] text-ink text-balance">Kelebihan <span class="font-serif italic font-semibold text-gradient text-[1.12em]">Nexamind.ai</span></h2>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]">
-                <!-- Item 1 (Span 2) -->
-                <div class="md:col-span-2 glass-card rounded-3xl p-8 flex flex-col justify-between group hover:-translate-y-1 transition-all duration-300 border-white/60 reveal relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-brand-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform duration-500"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- 1 -->
+                <article class="md:col-span-2 relative overflow-hidden rounded-[28px] p-8 md:p-10 bg-gradient-to-br from-brand-50 to-white border border-brand-100 min-h-[260px] flex flex-col justify-end reveal">
+                    <div class="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-brand-200/50 blur-3xl" aria-hidden="true"></div>
+                    <span class="absolute top-8 left-8 md:top-10 md:left-10 w-12 h-12 rounded-2xl bg-white shadow-soft text-brand-600 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" /></svg>
+                    </span>
+                    <div class="relative mt-20">
+                        <h3 class="text-2xl font-bold tracking-tight text-ink mb-2">Belajar Anti Bosan</h3>
+                        <p class="text-slate-600 text-lg leading-relaxed max-w-md">Dilengkapi game Islami, video edukasi, dan story book interaktif untuk anak SD &amp; TK.</p>
+                    </div>
+                </article>
+
+                <!-- 2 -->
+                <article class="rounded-[28px] p-8 bg-[#fbfcfe] border border-slate-900/[0.07] min-h-[260px] flex flex-col justify-between reveal">
+                    <span class="w-12 h-12 rounded-2xl bg-white shadow-soft text-aqua-600 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+                    </span>
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-brand-100 text-brand-600 flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" /></svg>
-                        </div>
-                        <h4 class="text-2xl font-heading font-bold text-gray-900 mb-2">Belajar Anti Bosan</h4>
-                        <p class="text-gray-600 text-lg">Dilengkapi game Islami, video edukasi, dan story book interaktif untuk anak SD & TK.</p>
+                        <h3 class="text-xl font-bold tracking-tight text-ink mb-2">Peluang Cuan</h3>
+                        <p class="text-slate-600 leading-relaxed">Panduan affiliate, bahan konten, dan cara promosi untuk pemula.</p>
                     </div>
-                </div>
+                </article>
 
-                <!-- Item 2 -->
-                <div class="glass-card rounded-3xl p-8 flex flex-col justify-between group hover:-translate-y-1 transition-all duration-300 border-white/60 reveal">
+                <!-- 3 -->
+                <article class="rounded-[28px] p-8 bg-[#fbfcfe] border border-slate-900/[0.07] min-h-[260px] flex flex-col justify-between reveal">
+                    <span class="w-12 h-12 rounded-2xl bg-white shadow-soft text-accent flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" /></svg>
+                    </span>
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-green-100 text-green-600 flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        </div>
-                        <h4 class="text-xl font-heading font-bold text-gray-900 mb-2">Peluang Cuan</h4>
-                        <p class="text-gray-600">Panduan affiliate, bahan konten, dan cara promosi untuk pemula.</p>
+                        <h3 class="text-xl font-bold tracking-tight text-ink mb-2">Powered by AI</h3>
+                        <p class="text-slate-600 leading-relaxed">Generator modul ajar &amp; pembuat soal otomatis untuk guru.</p>
                     </div>
-                </div>
+                </article>
 
-                <!-- Item 3 -->
-                <div class="glass-card rounded-3xl p-8 flex flex-col justify-between group hover:-translate-y-1 transition-all duration-300 border-white/60 reveal">
-                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" /></svg>
-                        </div>
-                        <h4 class="text-xl font-heading font-bold text-gray-900 mb-2">Powered by AI</h4>
-                        <p class="text-gray-600">Generator modul ajar & pembuat soal otomatis untuk guru.</p>
+                <!-- 4 -->
+                <article class="md:col-span-2 relative overflow-hidden rounded-[28px] p-8 md:p-10 bg-ink text-white min-h-[260px] flex flex-col justify-between reveal">
+                    <div class="absolute inset-0 opacity-[0.07]" style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 28px 28px;" aria-hidden="true"></div>
+                    <div class="absolute -bottom-24 -right-16 w-80 h-80 rounded-full bg-accent/30 blur-3xl" aria-hidden="true"></div>
+                    <div class="relative flex justify-between items-start gap-4">
+                        <span class="w-12 h-12 rounded-2xl bg-white/10 border border-white/10 text-aqua-300 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
+                        </span>
+                        <span class="px-3 py-1 rounded-full border border-aqua-300/30 bg-aqua-500/10 text-aqua-200 text-xs font-semibold tracking-wider">LIFETIME ACCESS</span>
                     </div>
-                </div>
-
-                <!-- Item 4 (Span 2) -->
-                <div class="md:col-span-2 glass-card rounded-3xl p-8 flex flex-col justify-between group hover:-translate-y-1 transition-all duration-300 border-white/60 reveal bg-gray-900 text-white relative overflow-hidden">
-                     <div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 z-0"></div>
-                     <!-- Subtle Grid Overlay -->
-                     <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 20px 20px;"></div>
-                     
-                     <div class="relative z-10 flex flex-col h-full justify-between">
-                        <div class="flex justify-between items-start mb-6">
-                            <div class="w-12 h-12 rounded-xl bg-white/10 text-brand-300 flex items-center justify-center backdrop-blur-md">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
-                            </div>
-                            <span class="px-3 py-1 bg-brand-500/20 text-brand-300 text-xs font-bold rounded-full border border-brand-500/30">LIFETIME ACCESS</span>
-                        </div>
-                        <div>
-                            <h4 class="text-2xl font-heading font-bold text-white mb-2">Komunitas & Support</h4>
-                            <p class="text-gray-300 text-lg">Bukan sekadar beli lepas. Gabung grup komunitas eksklusif untuk diskusi, update materi, dan saling support sesama kreator.</p>
-                        </div>
+                    <div class="relative mt-10">
+                        <h3 class="text-2xl font-bold tracking-tight mb-2">Komunitas &amp; Support</h3>
+                        <p class="text-slate-300 text-lg leading-relaxed max-w-xl">Bukan sekadar beli lepas. Gabung grup komunitas eksklusif untuk diskusi, update materi, dan saling support sesama kreator.</p>
                     </div>
-                </div>
+                </article>
             </div>
         </div>
     </section>
 
     <!-- Katalog Produk -->
-    <section id="produk" class="py-24 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-sm font-bold tracking-widest text-brand-500 uppercase mb-3">Katalog Pilihan</h2>
-                <h3 class="text-3xl md:text-5xl font-heading font-bold text-gray-900">Pilih Kategori Kebutuhanmu</h3>
-                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Kami mengelompokkan produk menjadi dua kategori utama agar Anda lebih mudah memilih solusi yang tepat.</p>
+    <section id="produk" class="py-24 md:py-32 scroll-mt-16" aria-labelledby="produk-judul">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-14 reveal">
+                <p class="text-xs font-semibold tracking-[0.2em] uppercase text-brand-700 mb-4">Katalog pilihan</p>
+                <h2 id="produk-judul" class="text-3xl md:text-5xl md:leading-[1.08] font-bold tracking-[-0.03em] text-ink text-balance">Pilih kategori <span class="font-serif italic font-semibold text-gradient text-[1.12em]">kebutuhanmu</span></h2>
+                <p class="mt-5 text-lg text-slate-600 leading-relaxed">Kami mengelompokkan produk menjadi dua kategori utama agar Anda lebih mudah memilih solusi yang tepat.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
-                
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
+
                 <!-- Kategori 1: Produk Digital -->
-                <div class="glass-card rounded-3xl overflow-hidden flex flex-col border border-gray-200 hover:border-brand-400 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 reveal relative group">
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 opacity-50 z-0"></div>
-                    <div class="h-64 bg-gray-900 relative overflow-hidden flex items-center justify-center z-10">
-                         <div class="absolute inset-0 bg-mesh opacity-40"></div>
-                        <img src="https://placehold.co/800x600/0ea5e9/ffffff?text=Produk+Digital+Edukasi" alt="Produk Digital Edukasi" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 mix-blend-overlay">
-                        <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                            <h4 class="text-3xl md:text-4xl font-heading font-extrabold text-white mb-2 tracking-tight">PRODUK DIGITAL</h4>
-                            <p class="text-brand-200 font-medium text-lg">Edukasi Anak & Keluarga</p>
+                <article class="group flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft hover:shadow-lift transition-shadow duration-300 overflow-hidden reveal">
+                    <div class="relative h-56 overflow-hidden bg-gradient-to-br from-brand-500 via-brand-600 to-aqua-600 flex items-end p-8">
+                        <div class="absolute inset-0 opacity-[0.12]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 18px 18px;" aria-hidden="true"></div>
+                        <div class="absolute -top-16 -right-10 w-64 h-64 rounded-full bg-white/20 blur-2xl" aria-hidden="true"></div>
+                        <svg class="absolute top-8 right-8 w-24 h-24 text-white/25 transition-transform duration-500 group-hover:scale-105" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                        <div class="relative">
+                            <p class="text-white/85 text-sm font-medium mb-1">Edukasi Anak &amp; Keluarga</p>
+                            <h3 class="text-3xl font-bold tracking-tight text-white">Produk Digital</h3>
                         </div>
                     </div>
-                    <div class="p-8 flex-1 flex flex-col z-10 bg-white/60 backdrop-blur-sm">
-                        <p class="text-gray-600 mb-6 leading-relaxed">Kumpulan lengkap materi edukasi anak yang interaktif dan menyenangkan. Gabungan dari berbagai paket produk digital siap pakai.</p>
-                        
-                        <div class="space-y-3 mb-8 flex-1">
-                            <p class="font-semibold text-gray-900 text-sm uppercase tracking-wider mb-4">Termasuk di Dalamnya:</p>
-                            <li class="flex items-start gap-3 text-gray-700">
-                                <div class="mt-1 bg-brand-100 rounded-full p-1"><svg class="w-4 h-4 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
-                                <span><strong>Ribuan Materi:</strong> Worksheet, Flashcard, Story Book Digital, dan Game Edukasi.</span>
+                    <div class="p-8 flex-1 flex flex-col">
+                        <p class="text-slate-600 leading-relaxed mb-7">Kumpulan lengkap materi edukasi anak yang interaktif dan menyenangkan. Gabungan dari berbagai paket produk digital siap pakai.</p>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-[0.16em] mb-4">Termasuk di dalamnya</p>
+                        <ul class="space-y-4 mb-9 flex-1">
+                            <li class="flex items-start gap-3 text-slate-700 leading-relaxed">
+                                <svg class="w-5 h-5 mt-0.5 shrink-0 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span><strong class="font-semibold text-ink">Ribuan Materi:</strong> Worksheet, Flashcard, Story Book Digital, dan Game Edukasi.</span>
                             </li>
-                            <li class="flex items-start gap-3 text-gray-700">
-                                <div class="mt-1 bg-brand-100 rounded-full p-1"><svg class="w-4 h-4 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
-                                <span><strong>Materi Islami:</strong> Panduan Sholat, Doa Harian, Kisah Nabi, dan Game Islami.</span>
+                            <li class="flex items-start gap-3 text-slate-700 leading-relaxed">
+                                <svg class="w-5 h-5 mt-0.5 shrink-0 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span><strong class="font-semibold text-ink">Materi Islami:</strong> Panduan Sholat, Doa Harian, Kisah Nabi, dan Game Islami.</span>
                             </li>
-                            <li class="flex items-start gap-3 text-gray-700">
-                                <div class="mt-1 bg-brand-100 rounded-full p-1"><svg class="w-4 h-4 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
-                                <span><strong>Akses Eksklusif:</strong> Bergabung dengan Group Komunitas Nexamind.</span>
+                            <li class="flex items-start gap-3 text-slate-700 leading-relaxed">
+                                <svg class="w-5 h-5 mt-0.5 shrink-0 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span><strong class="font-semibold text-ink">Akses Eksklusif:</strong> Bergabung dengan Group Komunitas Nexamind.</span>
                             </li>
-                        </div>
-                        
-                        <a href="https://lynk.id/zulnandigipreneur" target="_blank" class="w-full block text-center py-4 px-6 rounded-xl bg-gray-900 text-white font-bold text-lg hover:bg-brand-600 hover:shadow-lg transition-all transform hover:-translate-y-1 btn-glow">Lihat Paket di Lynk.id</a>
+                        </ul>
+                        <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 h-14 px-6 rounded-full bg-ink text-white font-semibold hover:bg-brand-700 transition-colors duration-200">
+                            Lihat Paket di Lynk.id
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+                        </a>
                     </div>
-                </div>
+                </article>
 
                 <!-- Kategori 2: Tools AI -->
-                <div class="glass-card rounded-3xl overflow-hidden flex flex-col border border-gray-200 hover:border-accent transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 reveal relative group" style="transition-delay: 150ms;">
-                    <div class="absolute inset-0 bg-gradient-to-br from-purple-50 to-pink-50 opacity-50 z-0"></div>
-                    <div class="h-64 bg-gray-900 relative overflow-hidden flex items-center justify-center z-10">
-                         <div class="absolute inset-0 bg-mesh opacity-40"></div>
-                        <img src="https://placehold.co/800x600/6366f1/ffffff?text=Tools+AI+Siap+Pakai" alt="Tools AI Cuan" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 mix-blend-overlay">
-                        <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                            <h4 class="text-3xl md:text-4xl font-heading font-extrabold text-white mb-2 tracking-tight">TOOLS AI CUAN</h4>
-                            <p class="text-accent-light font-medium text-lg">Senjata Rahasia Kreator & Afiliator</p>
+                <article class="group flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft hover:shadow-lift transition-shadow duration-300 overflow-hidden reveal">
+                    <div class="relative h-56 overflow-hidden bg-gradient-to-br from-aqua-600 via-accent-dark to-accent flex items-end p-8">
+                        <div class="absolute inset-0 opacity-[0.12]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 18px 18px;" aria-hidden="true"></div>
+                        <div class="absolute -top-16 -right-10 w-64 h-64 rounded-full bg-aqua-300/25 blur-2xl" aria-hidden="true"></div>
+                        <svg class="absolute top-8 right-8 w-24 h-24 text-white/25 transition-transform duration-500 group-hover:scale-105" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z" /></svg>
+                        <div class="relative">
+                            <p class="text-white/85 text-sm font-medium mb-1">Senjata Rahasia Kreator &amp; Afiliator</p>
+                            <h3 class="text-3xl font-bold tracking-tight text-white">Tools AI Cuan</h3>
                         </div>
                     </div>
-                    <div class="p-8 flex-1 flex flex-col z-10 bg-white/60 backdrop-blur-sm">
-                        <p class="text-gray-600 mb-6 leading-relaxed">Kumpulan tools kecerdasan buatan (AI) praktis yang dirancang khusus untuk mempercepat pembuatan konten dan melipatgandakan penghasilan Anda.</p>
-                        
-                        <div class="space-y-3 mb-8 flex-1">
-                            <p class="font-semibold text-gray-900 text-sm uppercase tracking-wider mb-4">Modul Tersedia:</p>
-                            <li class="flex items-start gap-3 text-gray-700">
-                                <div class="mt-1 bg-accent-light rounded-full p-1"><svg class="w-4 h-4 text-accent-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
-                                <span><strong>Konten Instan:</strong> Buat Konten Anti Ribet khusus untuk Afiliator.</span>
+                    <div class="p-8 flex-1 flex flex-col">
+                        <p class="text-slate-600 leading-relaxed mb-7">Kumpulan tools kecerdasan buatan (AI) praktis yang dirancang khusus untuk mempercepat pembuatan konten dan melipatgandakan penghasilan Anda.</p>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-[0.16em] mb-4">Modul tersedia</p>
+                        <ul class="space-y-4 mb-9 flex-1">
+                            <li class="flex items-start gap-3 text-slate-700 leading-relaxed">
+                                <svg class="w-5 h-5 mt-0.5 shrink-0 text-accent-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span><strong class="font-semibold text-ink">Konten Instan:</strong> Buat Konten Anti Ribet khusus untuk Afiliator.</span>
                             </li>
-                            <li class="flex items-start gap-3 text-gray-700">
-                                <div class="mt-1 bg-accent-light rounded-full p-1"><svg class="w-4 h-4 text-accent-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
-                                <span><strong>Visual & Cerita:</strong> Generator Storyboard UGC & Storyboard Animasi.</span>
+                            <li class="flex items-start gap-3 text-slate-700 leading-relaxed">
+                                <svg class="w-5 h-5 mt-0.5 shrink-0 text-accent-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span><strong class="font-semibold text-ink">Visual &amp; Cerita:</strong> Generator Storyboard UGC &amp; Storyboard Animasi.</span>
                             </li>
-                            <li class="flex items-start gap-3 text-gray-700">
-                                <div class="mt-1 bg-accent-light rounded-full p-1"><svg class="w-4 h-4 text-accent-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
-                                <span><strong>Mega Bundling AI:</strong> Termasuk 3 modul di atas + Bonus Tutorial buat Web, Cuan dari Lynk.id & Strategi Promosi.</span>
+                            <li class="flex items-start gap-3 text-slate-700 leading-relaxed">
+                                <svg class="w-5 h-5 mt-0.5 shrink-0 text-accent-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span><strong class="font-semibold text-ink">Mega Bundling AI:</strong> Termasuk 3 modul di atas + Bonus Tutorial buat Web, Cuan dari Lynk.id &amp; Strategi Promosi.</span>
                             </li>
-                        </div>
-                        
-                        <a href="https://lynk.id/zulnandigipreneur" target="_blank" class="w-full block text-center py-4 px-6 rounded-xl bg-gray-900 text-white font-bold text-lg hover:bg-accent hover:shadow-lg transition-all transform hover:-translate-y-1 btn-glow">Lihat Paket di Lynk.id</a>
+                        </ul>
+                        <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 h-14 px-6 rounded-full bg-ink text-white font-semibold hover:bg-accent-dark transition-colors duration-200">
+                            Lihat Paket di Lynk.id
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+                        </a>
                     </div>
-                </div>
-
+                </article>
             </div>
-            
-            <!-- Coming Soon Section -->
-            <div class="mt-20 max-w-4xl mx-auto">
-                <div class="glass-card rounded-3xl p-1 bg-gradient-to-r from-brand-400 via-accent to-purple-500 reveal">
-                    <div class="bg-white/90 backdrop-blur-xl rounded-[22px] p-8 md:p-12 text-center relative overflow-hidden">
-                        <!-- Decorative Elements -->
-                        <div class="absolute top-0 right-0 -mr-16 -mt-16 w-48 h-48 bg-brand-100 rounded-full opacity-50 blur-2xl"></div>
-                        <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 bg-purple-100 rounded-full opacity-50 blur-2xl"></div>
-                        
-                        <span class="inline-block py-1 px-3 rounded-full bg-brand-50 text-brand-600 text-xs font-bold tracking-widest uppercase mb-4 border border-brand-200">Segera Hadir</span>
-                        <h4 class="text-2xl md:text-4xl font-heading font-extrabold text-gray-900 mb-4">Course: AI Agent Automation for Affiliate</h4>
-                        <p class="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto mb-8">Tingkatkan omset afiliasi Anda dengan sistem otomatisasi menggunakan agen kecerdasan buatan. Belajar cara membangun mesin pencetak cuan 24/7!</p>
-                        
-                        <div class="inline-flex items-center justify-center space-x-2">
-                            <span class="w-3 h-3 bg-brand-500 rounded-full animate-ping"></span>
-                            <span class="text-brand-600 font-medium">Sedang dalam tahap pengembangan</span>
-                        </div>
+
+            <!-- Segera Hadir -->
+            <div class="mt-8 max-w-5xl mx-auto reveal">
+                <div class="ring-gradient rounded-[28px] bg-gradient-to-br from-brand-50/80 via-white to-accent-light/60 px-8 py-10 md:px-12 md:py-12 flex flex-col md:flex-row md:items-center gap-8 justify-between">
+                    <div class="max-w-2xl">
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-brand-200 text-brand-700 text-xs font-semibold tracking-wider uppercase mb-4">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-500" aria-hidden="true"></span>
+                            Segera hadir
+                        </span>
+                        <h3 class="text-2xl md:text-3xl font-bold tracking-tight text-ink mb-3">Course: AI Agent Automation for Affiliate</h3>
+                        <p class="text-slate-600 text-lg leading-relaxed">Tingkatkan omset afiliasi Anda dengan sistem otomatisasi menggunakan agen kecerdasan buatan. Belajar cara membangun mesin pencetak cuan 24/7!</p>
                     </div>
+                    <p class="shrink-0 inline-flex items-center gap-2 text-sm font-medium text-slate-600">
+                        <svg class="w-5 h-5 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Sedang dalam tahap pengembangan
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Cara Kerja / Cara Order -->
-    <section id="cara-order" class="py-24 relative overflow-hidden bg-white/40 border-y border-white/60">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-sm font-bold tracking-widest text-brand-500 uppercase mb-3">Proses Instan</h2>
-                <h3 class="text-3xl md:text-5xl font-heading font-bold text-gray-900">Cara Mendapatkan Produk</h3>
+    <!-- Cara Order -->
+    <section id="cara-order" class="py-24 md:py-32 scroll-mt-16 bg-white border-y border-slate-900/[0.06]" aria-labelledby="cara-judul">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+            <div class="max-w-2xl mb-14 reveal">
+                <p class="text-xs font-semibold tracking-[0.2em] uppercase text-brand-700 mb-4">Proses instan</p>
+                <h2 id="cara-judul" class="text-3xl md:text-5xl md:leading-[1.08] font-bold tracking-[-0.03em] text-ink text-balance">Cara mendapatkan <span class="font-serif italic font-semibold text-gradient text-[1.12em]">produk</span></h2>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Step 1 -->
-                <div class="relative text-center reveal">
-                    <div class="w-16 h-16 mx-auto bg-white rounded-2xl shadow-md border border-gray-100 flex items-center justify-center text-2xl font-heading font-bold text-brand-500 relative z-10 mb-6">1</div>
-                    <div class="hidden md:block absolute top-8 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-brand-300 to-transparent border-t border-dashed border-brand-400 z-0"></div>
-                    <h4 class="text-xl font-bold text-gray-900 mb-2">Pilih Paket</h4>
-                    <p class="text-gray-600 text-sm">Pilih paket sesuai kebutuhan Anda (disarankan Mega Bundling).</p>
-                </div>
-                <!-- Step 2 -->
-                <div class="relative text-center reveal" style="transition-delay: 100ms;">
-                    <div class="w-16 h-16 mx-auto bg-white rounded-2xl shadow-md border border-gray-100 flex items-center justify-center text-2xl font-heading font-bold text-brand-500 relative z-10 mb-6">2</div>
-                    <div class="hidden md:block absolute top-8 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-brand-300 to-transparent border-t border-dashed border-brand-400 z-0"></div>
-                    <h4 class="text-xl font-bold text-gray-900 mb-2">Klik Beli</h4>
-                    <p class="text-gray-600 text-sm">Klik tombol beli dan Anda akan diarahkan ke halaman pembayaran aman Lynk.id.</p>
-                </div>
-                <!-- Step 3 -->
-                <div class="relative text-center reveal" style="transition-delay: 200ms;">
-                    <div class="w-16 h-16 mx-auto bg-white rounded-2xl shadow-md border border-gray-100 flex items-center justify-center text-2xl font-heading font-bold text-brand-500 relative z-10 mb-6">3</div>
-                    <div class="hidden md:block absolute top-8 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-brand-300 to-transparent border-t border-dashed border-brand-400 z-0"></div>
-                    <h4 class="text-xl font-bold text-gray-900 mb-2">Lakukan Pembayaran</h4>
-                    <p class="text-gray-600 text-sm">Pilih metode pembayaran (Transfer Bank, e-Wallet, dll) dan selesaikan.</p>
-                </div>
-                <!-- Step 4 -->
-                <div class="relative text-center reveal" style="transition-delay: 300ms;">
-                    <div class="w-16 h-16 mx-auto bg-brand-500 rounded-2xl shadow-lg shadow-brand-500/30 border border-brand-400 flex items-center justify-center text-2xl font-heading font-bold text-white relative z-10 mb-6 animate-bounce" style="animation-duration: 3s;">4</div>
-                    <h4 class="text-xl font-bold text-gray-900 mb-2">Akses Instan</h4>
-                    <p class="text-gray-600 text-sm">File produk dan link komunitas otomatis dikirim ke email Anda. Siap didownload!</p>
-                </div>
-            </div>
+
+            <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px rounded-[28px] overflow-hidden bg-slate-900/[0.07] border border-slate-900/[0.07] reveal">
+                <li class="bg-white p-8">
+                    <span class="font-serif italic text-5xl leading-none text-brand-600" aria-hidden="true">01</span>
+                    <h3 class="mt-6 text-lg font-bold text-ink mb-2">Pilih Paket</h3>
+                    <p class="text-slate-600 leading-relaxed">Pilih paket sesuai kebutuhan Anda (disarankan Mega Bundling).</p>
+                </li>
+                <li class="bg-white p-8">
+                    <span class="font-serif italic text-5xl leading-none text-aqua-600" aria-hidden="true">02</span>
+                    <h3 class="mt-6 text-lg font-bold text-ink mb-2">Klik Beli</h3>
+                    <p class="text-slate-600 leading-relaxed">Klik tombol beli dan Anda akan diarahkan ke halaman pembayaran aman Lynk.id.</p>
+                </li>
+                <li class="bg-white p-8">
+                    <span class="font-serif italic text-5xl leading-none text-accent-dark" aria-hidden="true">03</span>
+                    <h3 class="mt-6 text-lg font-bold text-ink mb-2">Lakukan Pembayaran</h3>
+                    <p class="text-slate-600 leading-relaxed">Pilih metode pembayaran (Transfer Bank, e-Wallet, dll) dan selesaikan.</p>
+                </li>
+                <li class="bg-ink p-8 text-white">
+                    <span class="font-serif italic text-5xl leading-none text-aqua-300" aria-hidden="true">04</span>
+                    <h3 class="mt-6 text-lg font-bold mb-2">Akses Instan</h3>
+                    <p class="text-slate-300 leading-relaxed">File produk dan link komunitas otomatis dikirim ke email Anda. Siap didownload!</p>
+                </li>
+            </ol>
         </div>
     </section>
 
     <!-- Testimoni -->
-    <section class="py-24 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal">
-                <h2 class="text-sm font-bold tracking-widest text-brand-500 uppercase mb-3">Kata Mereka</h2>
-                <h3 class="text-3xl md:text-5xl font-heading font-bold text-gray-900">Dipercaya Ratusan Orang</h3>
+    <section class="py-24 md:py-32" aria-labelledby="testi-judul">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-14 reveal">
+                <p class="text-xs font-semibold tracking-[0.2em] uppercase text-brand-700 mb-4">Kata mereka</p>
+                <h2 id="testi-judul" class="text-3xl md:text-5xl md:leading-[1.08] font-bold tracking-[-0.03em] text-ink text-balance">Dipercaya <span class="font-serif italic font-semibold text-gradient text-[1.12em]">ratusan orang</span></h2>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Testi 1 -->
-                <div class="glass-card p-8 rounded-3xl reveal border border-white/60 relative">
-                    <div class="absolute top-6 right-6 text-brand-200 opacity-50">
-                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-                    </div>
-                    <div class="flex items-center gap-1 text-yellow-400 mb-4">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                    </div>
-                    <p class="text-gray-700 mb-6 italic relative z-10">"Sangat terbantu sebagai guru TK! Worksheetnya lengkap banget, anak-anak jadi lebih antusias belajar. Nyesel gak beli Mega Bundling dari awal."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://placehold.co/100x100/e2e8f0/64748b?text=Siti" alt="User" class="w-12 h-12 rounded-full object-cover">
-                        <div>
-                            <h5 class="font-bold text-gray-900">Siti Rahma</h5>
-                            <p class="text-sm text-gray-500">Guru PAUD</p>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Testi 2 -->
-                <div class="glass-card p-8 rounded-3xl reveal border border-white/60 relative" style="transition-delay: 100ms;">
-                     <div class="absolute top-6 right-6 text-brand-200 opacity-50">
-                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <figure class="flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft p-8 reveal">
+                    <div class="flex gap-0.5 text-amber-500 mb-6" role="img" aria-label="Rating 5 dari 5">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                     </div>
-                    <div class="flex items-center gap-1 text-yellow-400 mb-4">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                    </div>
-                    <p class="text-gray-700 mb-6 italic relative z-10">"Generator AI-nya bikin hemat waktu bikin modul. Sisa waktunya bisa belajar jualan pakai tutorial bonusnya. Recommended buat pemula!"</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://placehold.co/100x100/e2e8f0/64748b?text=Andi" alt="User" class="w-12 h-12 rounded-full object-cover">
-                        <div>
-                            <h5 class="font-bold text-gray-900">Andi Saputra</h5>
-                            <p class="text-sm text-gray-500">Digital Creator</p>
-                        </div>
-                    </div>
-                </div>
+                    <blockquote class="flex-1 text-slate-700 text-[17px] leading-relaxed">&ldquo;Sangat terbantu sebagai guru TK! Worksheetnya lengkap banget, anak-anak jadi lebih antusias belajar. Nyesel gak beli Mega Bundling dari awal.&rdquo;</blockquote>
+                    <figcaption class="mt-8 pt-6 border-t border-slate-900/[0.06] flex items-center gap-3">
+                        <span class="w-11 h-11 rounded-full bg-brand-50 text-brand-700 font-semibold flex items-center justify-center" aria-hidden="true">SR</span>
+                        <span>
+                            <span class="block font-semibold text-ink">Siti Rahma</span>
+                            <span class="block text-sm text-slate-500">Guru PAUD</span>
+                        </span>
+                    </figcaption>
+                </figure>
 
-                <!-- Testi 3 -->
-                <div class="glass-card p-8 rounded-3xl reveal border border-white/60 relative" style="transition-delay: 200ms;">
-                     <div class="absolute top-6 right-6 text-brand-200 opacity-50">
-                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                <figure class="flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft p-8 reveal">
+                    <div class="flex gap-0.5 text-amber-500 mb-6" role="img" aria-label="Rating 5 dari 5">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                     </div>
-                    <div class="flex items-center gap-1 text-yellow-400 mb-4">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <blockquote class="flex-1 text-slate-700 text-[17px] leading-relaxed">&ldquo;Generator AI-nya bikin hemat waktu bikin modul. Sisa waktunya bisa belajar jualan pakai tutorial bonusnya. Recommended buat pemula!&rdquo;</blockquote>
+                    <figcaption class="mt-8 pt-6 border-t border-slate-900/[0.06] flex items-center gap-3">
+                        <span class="w-11 h-11 rounded-full bg-accent-light text-accent-dark font-semibold flex items-center justify-center" aria-hidden="true">AS</span>
+                        <span>
+                            <span class="block font-semibold text-ink">Andi Saputra</span>
+                            <span class="block text-sm text-slate-500">Digital Creator</span>
+                        </span>
+                    </figcaption>
+                </figure>
+
+                <figure class="flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft p-8 reveal">
+                    <div class="flex gap-0.5 text-amber-500 mb-6" role="img" aria-label="Rating 5 dari 5">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                     </div>
-                    <p class="text-gray-700 mb-6 italic relative z-10">"Anak saya jadi suka banget sama game Islaminya. Belajar agama jadi interaktif. Pembelian sangat mudah dan file langsung bisa diakses."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://placehold.co/100x100/e2e8f0/64748b?text=Bunda+A" alt="User" class="w-12 h-12 rounded-full object-cover">
-                        <div>
-                            <h5 class="font-bold text-gray-900">Bunda Aisha</h5>
-                            <p class="text-sm text-gray-500">Ibu Rumah Tangga</p>
-                        </div>
-                    </div>
-                </div>
+                    <blockquote class="flex-1 text-slate-700 text-[17px] leading-relaxed">&ldquo;Anak saya jadi suka banget sama game Islaminya. Belajar agama jadi interaktif. Pembelian sangat mudah dan file langsung bisa diakses.&rdquo;</blockquote>
+                    <figcaption class="mt-8 pt-6 border-t border-slate-900/[0.06] flex items-center gap-3">
+                        <span class="w-11 h-11 rounded-full bg-brand-50 text-brand-700 font-semibold flex items-center justify-center" aria-hidden="true">BA</span>
+                        <span>
+                            <span class="block font-semibold text-ink">Bunda Aisha</span>
+                            <span class="block text-sm text-slate-500">Ibu Rumah Tangga</span>
+                        </span>
+                    </figcaption>
+                </figure>
             </div>
         </div>
     </section>
 
     <!-- FAQ -->
-    <section class="py-24 relative bg-gray-50/50 border-t border-white/50">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal">
-                <h3 class="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">Pertanyaan Umum</h3>
-                <p class="text-gray-600">Hal yang sering ditanyakan sebelum membeli.</p>
+    <section id="faq" class="py-24 md:py-32 scroll-mt-16 bg-white border-t border-slate-900/[0.06]" aria-labelledby="faq-judul">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div class="lg:col-span-4 reveal">
+                <p class="text-xs font-semibold tracking-[0.2em] uppercase text-brand-700 mb-4">FAQ</p>
+                <h2 id="faq-judul" class="text-3xl md:text-5xl md:leading-[1.08] font-bold tracking-[-0.03em] text-ink text-balance">Pertanyaan <span class="font-serif italic font-semibold text-gradient text-[1.12em]">umum</span></h2>
+                <p class="mt-5 text-lg text-slate-600 leading-relaxed">Hal yang sering ditanyakan sebelum membeli.</p>
             </div>
 
-            <div class="space-y-4 reveal" x-data="{ active: null }">
-                <!-- FAQ 1 -->
-                <div class="glass-card rounded-2xl overflow-hidden border border-white/80">
-                    <button @click="active = active === 1 ? null : 1" class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none bg-white/40 hover:bg-white/60 transition-colors">
-                        <span class="font-bold text-gray-900 text-lg">Apakah file dikirim ke rumah?</span>
-                        <svg class="w-5 h-5 text-brand-500 transform transition-transform duration-300" :class="{'rotate-180': active === 1}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div x-show="active === 1" x-collapse x-cloak>
-                        <div class="px-6 pb-5 pt-2 text-gray-600">
-                            Tidak. Semua produk Nexamind.ai adalah produk DIGITAL. Anda akan mendapatkan link akses/download langsung via email segera setelah pembayaran terkonfirmasi.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ 2 -->
-                <div class="glass-card rounded-2xl overflow-hidden border border-white/80">
-                    <button @click="active = active === 2 ? null : 2" class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none bg-white/40 hover:bg-white/60 transition-colors">
-                        <span class="font-bold text-gray-900 text-lg">Apakah ada biaya bulanan?</span>
-                        <svg class="w-5 h-5 text-brand-500 transform transition-transform duration-300" :class="{'rotate-180': active === 2}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div x-show="active === 2" x-collapse x-cloak>
-                        <div class="px-6 pb-5 pt-2 text-gray-600">
-                            Tidak ada! Sekali bayar untuk akses selamanya (Lifetime Access) ke produk yang Anda beli. Bebas didownload kapan saja.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ 3 -->
-                <div class="glass-card rounded-2xl overflow-hidden border border-white/80">
-                    <button @click="active = active === 3 ? null : 3" class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none bg-white/40 hover:bg-white/60 transition-colors">
-                        <span class="font-bold text-gray-900 text-lg">Saya gaptek, apakah diajari cara pakainya?</span>
-                        <svg class="w-5 h-5 text-brand-500 transform transition-transform duration-300" :class="{'rotate-180': active === 3}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div x-show="active === 3" x-collapse x-cloak>
-                        <div class="px-6 pb-5 pt-2 text-gray-600">
-                            Tentu. Khusus untuk pembelian Mega Bundling, Anda mendapatkan akses Grup Komunitas dan berbagai video tutorial step-by-step yang mudah dipahami pemula.
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- FAQ 4 -->
-                <div class="glass-card rounded-2xl overflow-hidden border border-white/80">
-                    <button @click="active = active === 4 ? null : 4" class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none bg-white/40 hover:bg-white/60 transition-colors">
-                        <span class="font-bold text-gray-900 text-lg">Boleh dijual lagi (Resell)?</span>
-                        <svg class="w-5 h-5 text-brand-500 transform transition-transform duration-300" :class="{'rotate-180': active === 4}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div x-show="active === 4" x-collapse x-cloak>
-                        <div class="px-6 pb-5 pt-2 text-gray-600">
-                            Sebagian besar materi edukasi bisa digunakan untuk pribadi. Namun, kami menyediakan program Affiliate & tutorial promosi di Mega Bundling jika Anda ingin menghasilkan cuan bersama kami.
-                        </div>
-                    </div>
-                </div>
+            <div class="lg:col-span-8 divide-y divide-slate-900/[0.08] border-y border-slate-900/[0.08] reveal">
+                <details class="group">
+                    <summary class="flex justify-between items-center gap-6 py-6 cursor-pointer text-left">
+                        <span class="text-lg font-semibold text-ink">Apakah file dikirim ke rumah?</span>
+                        <span class="faq-chevron w-9 h-9 shrink-0 rounded-full border border-slate-900/10 flex items-center justify-center text-brand-600 transition-transform duration-200 group-hover:border-brand-300" aria-hidden="true">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                        </span>
+                    </summary>
+                    <p class="pb-6 pr-14 text-slate-600 leading-relaxed">Tidak. Semua produk Nexamind.ai adalah produk DIGITAL. Anda akan mendapatkan link akses/download langsung via email segera setelah pembayaran terkonfirmasi.</p>
+                </details>
+                <details class="group">
+                    <summary class="flex justify-between items-center gap-6 py-6 cursor-pointer text-left">
+                        <span class="text-lg font-semibold text-ink">Apakah ada biaya bulanan?</span>
+                        <span class="faq-chevron w-9 h-9 shrink-0 rounded-full border border-slate-900/10 flex items-center justify-center text-brand-600 transition-transform duration-200 group-hover:border-brand-300" aria-hidden="true">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                        </span>
+                    </summary>
+                    <p class="pb-6 pr-14 text-slate-600 leading-relaxed">Tidak ada! Sekali bayar untuk akses selamanya (Lifetime Access) ke produk yang Anda beli. Bebas didownload kapan saja.</p>
+                </details>
+                <details class="group">
+                    <summary class="flex justify-between items-center gap-6 py-6 cursor-pointer text-left">
+                        <span class="text-lg font-semibold text-ink">Saya gaptek, apakah diajari cara pakainya?</span>
+                        <span class="faq-chevron w-9 h-9 shrink-0 rounded-full border border-slate-900/10 flex items-center justify-center text-brand-600 transition-transform duration-200 group-hover:border-brand-300" aria-hidden="true">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                        </span>
+                    </summary>
+                    <p class="pb-6 pr-14 text-slate-600 leading-relaxed">Tentu. Khusus untuk pembelian Mega Bundling, Anda mendapatkan akses Grup Komunitas dan berbagai video tutorial step-by-step yang mudah dipahami pemula.</p>
+                </details>
+                <details class="group">
+                    <summary class="flex justify-between items-center gap-6 py-6 cursor-pointer text-left">
+                        <span class="text-lg font-semibold text-ink">Boleh dijual lagi (Resell)?</span>
+                        <span class="faq-chevron w-9 h-9 shrink-0 rounded-full border border-slate-900/10 flex items-center justify-center text-brand-600 transition-transform duration-200 group-hover:border-brand-300" aria-hidden="true">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                        </span>
+                    </summary>
+                    <p class="pb-6 pr-14 text-slate-600 leading-relaxed">Sebagian besar materi edukasi bisa digunakan untuk pribadi. Namun, kami menyediakan program Affiliate &amp; tutorial promosi di Mega Bundling jika Anda ingin menghasilkan cuan bersama kami.</p>
+                </details>
             </div>
         </div>
     </section>
 
     <!-- CTA Penutup -->
-    <section class="py-24 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gray-900"></div>
-        <!-- Decorative Glow in CTA -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-500 rounded-full filter blur-[120px] opacity-20 pointer-events-none"></div>
-        
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center reveal">
-            <h2 class="text-4xl md:text-6xl font-heading font-extrabold text-white mb-6">Siap Menentukan Masa Depanmu?</h2>
-            <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">Jangan tunda lagi. Berikan edukasi terbaik untuk anak dan mulai perjalanan digital creatormu hari ini.</p>
-            <a href="https://lynk.id/zulnandigipreneur" target="_blank" class="inline-flex px-10 py-5 rounded-2xl bg-white text-gray-900 font-bold text-xl hover:bg-brand-50 transition-all shadow-[0_0_40px_rgba(14,165,233,0.4)] hover:shadow-[0_0_60px_rgba(14,165,233,0.6)] transform hover:-translate-y-1 items-center gap-3">
-                Beli Mega Bundling Sekarang
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
-            </a>
+    <section class="px-5 sm:px-8 pb-24 md:pb-32 bg-white">
+        <div class="relative max-w-[68rem] mx-auto overflow-hidden rounded-[32px] bg-ink px-8 py-20 md:py-28 text-center reveal">
+            <div class="absolute inset-0 opacity-[0.06]" style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 40px 40px;" aria-hidden="true"></div>
+            <div class="absolute -top-40 left-1/2 -translate-x-[75%] w-[520px] h-[520px] rounded-full bg-brand-500/35 blur-[110px] pointer-events-none" aria-hidden="true"></div>
+            <div class="absolute -bottom-48 left-1/2 -translate-x-[10%] w-[520px] h-[520px] rounded-full bg-accent/30 blur-[110px] pointer-events-none" aria-hidden="true"></div>
+
+            <div class="relative max-w-3xl mx-auto">
+                <h2 class="text-4xl md:text-6xl md:leading-[1.05] font-bold tracking-[-0.035em] text-white text-balance">
+                    Siap menentukan <span class="font-serif italic font-semibold text-[1.12em] bg-gradient-to-r from-brand-300 via-aqua-300 to-accent bg-clip-text text-transparent">masa depanmu?</span>
+                </h2>
+                <p class="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed max-w-2xl mx-auto">Jangan tunda lagi. Berikan edukasi terbaik untuk anak dan mulai perjalanan digital creatormu hari ini.</p>
+                <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" class="group mt-10 inline-flex items-center gap-3 h-14 md:h-16 px-8 md:px-10 rounded-full bg-white text-ink font-semibold text-base md:text-lg hover:bg-brand-50 shadow-[0_0_48px_-8px_rgba(15,230,219,0.5)] transition-colors duration-200">
+                    Beli Mega Bundling Sekarang
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                </a>
+                <p class="mt-5 text-sm text-slate-400">Sekali bayar &middot; Akses selamanya &middot; Dikirim instan via email</p>
+            </div>
         </div>
     </section>
 
+    </main>
+
     <!-- Footer -->
-    <footer class="glass-card border-t border-gray-200/50 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-400 to-accent flex items-center justify-center text-white font-bold">N</div>
-                <span class="font-heading font-bold text-xl text-gray-900">Nexamind<span class="text-brand-500">.ai</span></span>
-            </div>
-            
-            <p class="text-gray-500 text-sm text-center md:text-left">
+    <footer class="bg-white border-t border-slate-900/[0.06] py-12">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <a href="#" class="flex items-center gap-2.5" aria-label="Nexamind.ai, ke atas halaman">
+                <img src="./assets/nexamind-mark.png" alt="" width="359" height="220" class="h-8 w-auto">
+                <span class="wordmark text-[1.35rem] leading-none text-ink"><span class="font-bold">nexa</span><span class="font-light">mind</span><span class="font-normal text-aqua-700">.ai</span></span>
+            </a>
+
+            <p class="text-slate-500 text-sm text-center">
                 &copy; <span id="year"></span> Nexamind.ai. All rights reserved.<br>
-                Masa depan kamu yang menentukan, pilihan ada ditanganmu!
+                <span class="font-serif italic text-base text-slate-600">Masa depan kamu yang menentukan, pilihan ada ditanganmu!</span>
             </p>
-            
-            <div class="flex gap-4">
-                <a href="#" class="w-10 h-10 rounded-full bg-white/80 border border-gray-200 flex items-center justify-center text-gray-600 hover:text-brand-500 hover:border-brand-300 transition-colors shadow-sm">
+
+            <div class="flex gap-2">
+                <a href="https://www.instagram.com/zfahrizan/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @zfahrizan" class="w-11 h-11 rounded-full border border-slate-900/10 flex items-center justify-center text-slate-600 hover:text-brand-600 hover:border-brand-300 transition-colors duration-200">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" /></svg>
                 </a>
-                <a href="#" class="w-10 h-10 rounded-full bg-white/80 border border-gray-200 flex items-center justify-center text-gray-600 hover:text-brand-500 hover:border-brand-300 transition-colors shadow-sm">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+                <a href="https://www.tiktok.com/@zulnandigipreneur" target="_blank" rel="noopener noreferrer" aria-label="TikTok @zulnandigipreneur" class="w-11 h-11 rounded-full border border-slate-900/10 flex items-center justify-center text-slate-600 hover:text-brand-600 hover:border-brand-300 transition-colors duration-200">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48z"/></svg>
                 </a>
             </div>
         </div>
@@ -705,175 +683,26 @@
 
     <!-- Scripts -->
     <script>
-        // Set dynamic year
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Intersection Observer for scroll animations (fade in up)
+        // Scroll reveal: animate once, then stop observing
         document.addEventListener('DOMContentLoaded', () => {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
+            const els = document.querySelectorAll('.reveal');
+            if (!('IntersectionObserver' in window)) {
+                els.forEach(el => el.classList.add('is-visible'));
+                return;
+            }
+            const observer = new IntersectionObserver((entries, obs) => {
                 entries.forEach(entry => {
-                    // Ignore elements that already have the active class if we don't want them to animate again
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        // Optional: stop observing once animated to keep it static after first scroll
-                        // observer.unobserve(entry.target); 
+                        entry.target.classList.add('is-visible');
+                        obs.unobserve(entry.target);
                     }
                 });
-            }, observerOptions);
-
-            const revealElements = document.querySelectorAll('.reveal');
-            revealElements.forEach(el => observer.observe(el));
-        });
-
-        // Chat Widget Logic
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('chatWidget', () => ({
-                isOpen: false,
-                messages: [{ role: 'model', text: 'Halo! Ada yang bisa saya bantu terkait produk Nexamind.ai?' }],
-                inputMessage: '',
-                isLoading: false,
-
-                async sendMessage() {
-                    if (!this.inputMessage.trim()) return;
-
-                    const userMsg = this.inputMessage;
-                    this.messages.push({ role: 'user', text: userMsg });
-                    this.inputMessage = '';
-                    this.isLoading = true;
-                    
-                    // Scroll to bottom
-                    this.scrollToBottom();
-
-                    try {
-                        const apiKey = ""; // API key is handled by the canvas environment
-                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-                        
-                        // Pass conversation history to maintain context
-                        const chatHistory = this.messages.map(msg => ({
-                            role: msg.role === 'model' ? 'model' : 'user',
-                            parts: [{ text: msg.text }]
-                        }));
-
-                        const systemInstruction = `Kamu adalah asisten virtual yang ramah dan membantu untuk website Nexamind.ai. Website ini didirikan oleh Zulnan.
-                        Nexamind.ai menjual produk digital edukasi dan bisnis.
-                        Produk Utama:
-                        1. Produk Digital Edukasi: Ribuan materi (Worksheet, Flashcard, Story Book, Game Edukasi), Materi Islami (Panduan Sholat, Doa, Game Islami), dan akses Group Komunitas.
-                        2. Tools AI Cuan: Alat untuk kreator & afiliator, termasuk pembuat konten otomatis, Storyboard UGC, Storyboard Animasi. Ada Mega Bundling AI yang mencakup tutorial web dan promosi.
-                        3. Coming Soon: Course AI Agent Automation for Affiliate.
-                        Cara Order: Pilih paket -> Klik Beli -> Lakukan Pembayaran di Lynk.id -> Akses instan dikirim via email. Tidak ada biaya bulanan (Lifetime Access).
-                        Jawab pertanyaan user dengan ramah, meyakinkan, menggunakan bahasa Indonesia yang baik, dan arahkan mereka untuk klik tombol beli atau menuju lynk.id/zulnandigipreneur jika mereka menunjukkan minat membeli. Jaga jawaban agar ringkas dan langsung ke intinya.`;
-
-                        const payload = {
-                            contents: chatHistory,
-                            systemInstruction: { parts: [{ text: systemInstruction }] }
-                        };
-
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-
-                        const result = await response.json();
-                        const botResponse = result.candidates?.[0]?.content?.parts?.[0]?.text || "Maaf, saya sedang mengalami gangguan sistem. Coba lagi beberapa saat.";
-                        
-                        this.messages.push({ role: 'model', text: botResponse });
-                    } catch (error) {
-                        console.error("Error fetching from Gemini:", error);
-                        this.messages.push({ role: 'model', text: "Maaf, terjadi kesalahan saat menghubungi server. Mohon periksa koneksi Anda dan coba lagi." });
-                    } finally {
-                        this.isLoading = false;
-                        this.scrollToBottom();
-                    }
-                },
-                
-                scrollToBottom() {
-                     setTimeout(() => {
-                        const chatContainer = document.getElementById('chat-messages-container');
-                        if(chatContainer) {
-                            chatContainer.scrollTop = chatContainer.scrollHeight;
-                        }
-                    }, 100);
-                }
-            }));
+            }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+            els.forEach(el => observer.observe(el));
         });
     </script>
 
-    <!-- Chat Widget HTML -->
-    <div x-data="chatWidget" class="fixed bottom-6 right-6 z-50">
-        <!-- Chat Button -->
-        <button @click="isOpen = !isOpen; if(isOpen) scrollToBottom()" 
-                class="w-14 h-14 bg-brand-500 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-brand-600 transition-colors btn-glow"
-                :class="{'rotate-90': isOpen, 'transition-transform': true}">
-            <svg x-show="!isOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 11.996c0 2.29.973 4.382 2.587 5.952L4.5 21l3.374-1.928A9.395 9.395 0 0012 20.25z" /></svg>
-            <svg x-show="isOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-        </button>
-
-        <!-- Chat Window -->
-        <div x-show="isOpen" 
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="opacity-0 translate-y-4 scale-95"
-             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-             x-transition:leave="transition ease-in duration-200"
-             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-             x-transition:leave-end="opacity-0 translate-y-4 scale-95"
-             class="absolute bottom-20 right-0 w-80 sm:w-96 glass-card rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/60"
-             style="display: none; height: 500px; max-height: calc(100vh - 120px);">
-            
-            <!-- Header -->
-            <div class="bg-gradient-to-r from-brand-500 to-accent p-4 text-white">
-                <h4 class="font-bold font-heading flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" /></svg>
-                    Nexamind AI Assistant
-                </h4>
-                <p class="text-xs text-brand-100">Tanya seputar produk kami</p>
-            </div>
-
-            <!-- Messages Area -->
-            <div id="chat-messages-container" class="flex-1 overflow-y-auto p-4 space-y-4 bg-white/40">
-                <template x-for="(message, index) in messages" :key="index">
-                    <div class="flex" :class="message.role === 'user' ? 'justify-end' : 'justify-start'">
-                        <div class="max-w-[85%] rounded-2xl px-4 py-2 text-sm shadow-sm"
-                             :class="message.role === 'user' ? 'bg-brand-500 text-white rounded-tr-none' : 'bg-white text-gray-800 rounded-tl-none border border-gray-100'">
-                            <span x-text="message.text"></span>
-                        </div>
-                    </div>
-                </template>
-                
-                <!-- Loading Indicator -->
-                <div x-show="isLoading" class="flex justify-start">
-                    <div class="bg-white rounded-2xl rounded-tl-none px-4 py-3 text-sm shadow-sm border border-gray-100 flex items-center gap-1">
-                        <div class="w-2 h-2 bg-brand-400 rounded-full animate-bounce"></div>
-                        <div class="w-2 h-2 bg-brand-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
-                        <div class="w-2 h-2 bg-brand-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Input Area -->
-            <div class="p-3 bg-white border-t border-gray-100">
-                <form @submit.prevent="sendMessage" class="flex items-center gap-2">
-                    <input type="text" x-model="inputMessage" placeholder="Ketik pertanyaan..." 
-                           class="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
-                           :disabled="isLoading">
-                    <button type="submit" 
-                            class="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors disabled:opacity-50"
-                            :disabled="isLoading || !inputMessage.trim()">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 ml-1"><path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" /></svg>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
