@@ -148,6 +148,90 @@
         /* Logo wordmark, matching the logo lettering */
         .wordmark { font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.01em; }
 
+
+        /* ===== Living layer: aurora, grain, cursor, spotlight, motion ===== */
+        .aurora { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+        .aurora span { position: absolute; border-radius: 9999px; will-change: transform; }
+        .aurora .a1 { width: 60vw; height: 60vw; left: -20vw; top: -20vw; background: radial-gradient(closest-side, rgba(122, 169, 247, .38), transparent); animation: drift-a 22s ease-in-out infinite alternate; }
+        .aurora .a2 { width: 52vw; height: 52vw; right: -16vw; top: 20vh; background: radial-gradient(closest-side, rgba(192, 159, 246, .34), transparent); animation: drift-b 26s ease-in-out infinite alternate; }
+        .aurora .a3 { width: 44vw; height: 44vw; left: 24vw; bottom: -22vw; background: radial-gradient(closest-side, rgba(95, 227, 220, .26), transparent); animation: drift-c 30s ease-in-out infinite alternate; }
+        @keyframes drift-a { to { transform: translate3d(16vw, 12vh, 0) scale(1.15); } }
+        @keyframes drift-b { to { transform: translate3d(-14vw, -10vh, 0) scale(.9); } }
+        @keyframes drift-c { to { transform: translate3d(10vw, -14vh, 0) scale(1.2); } }
+        .drift-a { animation: drift-a 18s ease-in-out infinite alternate; }
+        .drift-b { animation: drift-b 22s ease-in-out infinite alternate; }
+
+        .grain {
+            position: fixed; inset: 0; z-index: 55; pointer-events: none; opacity: .035;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* Scroll progress + header state */
+        #scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 70; transform-origin: 0 50%; transform: scaleX(0);
+            background: linear-gradient(90deg, #0a63ee, #1ca4b9, #a16eec); }
+        header.is-scrolled { box-shadow: 0 10px 30px -18px rgba(15, 23, 42, .35); }
+
+        /* Hero: neural canvas + cursor spotlight on the grid */
+        #neural { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
+            -webkit-mask-image: radial-gradient(ellipse 48% 42% at 50% 40%, rgba(0,0,0,.25), #000 78%);
+                    mask-image: radial-gradient(ellipse 48% 42% at 50% 40%, rgba(0,0,0,.25), #000 78%); }
+        .hero-spot { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .4s;
+            background-image:
+                linear-gradient(to right, rgba(10, 99, 238, .16) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(10, 99, 238, .16) 1px, transparent 1px);
+            background-size: 56px 56px;
+            -webkit-mask-image: radial-gradient(240px circle at var(--mx, 50%) var(--my, 30%), #000, transparent 70%);
+                    mask-image: radial-gradient(240px circle at var(--mx, 50%) var(--my, 30%), #000, transparent 70%); }
+        .hero:hover .hero-spot { opacity: 1; }
+
+        /* Hero intro (staggered) */
+        .js .intro { opacity: 0; transform: translateY(18px); animation: intro .9s var(--ease-out) forwards; animation-delay: var(--d, 0ms); }
+        @keyframes intro { to { opacity: 1; transform: none; } }
+
+        /* Slow shimmer on gradient headline words */
+        .shimmer { background-image: linear-gradient(100deg, #0a63ee 0%, #1a8ba0 25%, #8b55e0 50%, #1a8ba0 75%, #0a63ee 100%); background-size: 200% auto; animation: shimmer 9s linear infinite; }
+        @keyframes shimmer { to { background-position: -200% center; } }
+
+        /* Floating hero chips */
+        .chip { position: absolute; display: flex; align-items: center; gap: .75rem; padding: .7rem 1rem .7rem .7rem; border-radius: 18px;
+            background: rgba(255, 255, 255, .92); border: 1px solid rgba(15, 23, 42, .06); box-shadow: 0 14px 40px -18px rgba(15, 23, 42, .35);
+            will-change: transform; translate: var(--px, 0) var(--py, 0); transition: translate .6s var(--ease-out); }
+        @keyframes bob { 50% { transform: translateY(-10px); } }
+        .chip { animation: bob 6s ease-in-out infinite; }
+        .chip:nth-child(2) { animation-delay: -1.5s; } .chip:nth-child(3) { animation-delay: -3s; } .chip:nth-child(4) { animation-delay: -4.5s; }
+
+        /* Tools marquee */
+        .marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+        .marquee-track { display: flex; width: max-content; animation: marquee 45s linear infinite; }
+        .marquee:hover .marquee-track { animation-play-state: paused; }
+        @keyframes marquee { to { transform: translateX(-50%); } }
+
+        /* Card spotlight + lift */
+        .spot { position: relative; isolation: isolate; transition: translate .35s var(--ease-out), box-shadow .35s var(--ease-out), opacity 400ms var(--ease-out), transform 400ms var(--ease-out); }
+        .spot::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .35s; z-index: 2;
+            background: radial-gradient(380px circle at var(--x, 50%) var(--y, 50%), var(--spot, rgba(28, 164, 185, .13)), transparent 45%); }
+        .spot:hover::after { opacity: 1; }
+        .spot:hover { translate: 0 -4px; }
+        .spot-dark { --spot: rgba(255, 255, 255, .09); }
+
+        /* Shine sweep on primary buttons */
+        .shine { position: relative; overflow: hidden; isolation: isolate; }
+        .shine::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+            background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .22) 48%, transparent 66%); transform: translateX(-120%); }
+        .shine:hover::before { transition: transform .8s var(--ease-out); transform: translateX(120%); }
+        [data-magnetic] { transition: translate .35s var(--ease-out); translate: var(--tx, 0) var(--ty, 0); }
+
+        /* Custom cursor (fine pointers only, enabled from JS) */
+        #cursor-dot, #cursor-ring { position: fixed; left: 0; top: 0; z-index: 90; pointer-events: none; border-radius: 9999px; opacity: 0; transition: opacity .25s; }
+        #cursor-dot { width: 8px; height: 8px; margin: -4px 0 0 -4px; background: linear-gradient(135deg, #0a63ee, #a16eec); }
+        #cursor-ring { width: 38px; height: 38px; margin: -19px 0 0 -19px; border: 1.5px solid rgba(28, 164, 185, .75);
+            transition: opacity .25s, width .3s var(--ease-out), height .3s var(--ease-out), margin .3s var(--ease-out), background-color .3s, border-color .3s; }
+        html.has-cursor, html.has-cursor * { cursor: none !important; }
+        html.has-cursor.cursor-visible #cursor-dot, html.has-cursor.cursor-visible #cursor-ring { opacity: 1; }
+        html.cursor-hover #cursor-ring { width: 64px; height: 64px; margin: -32px 0 0 -32px; background-color: rgba(28, 164, 185, .12); border-color: rgba(161, 110, 236, .7); }
+        html.cursor-hover #cursor-dot { opacity: 0 !important; }
+        html.cursor-down #cursor-ring { width: 28px; height: 28px; margin: -14px 0 0 -14px; }
+
         /* FAQ disclosure */
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
@@ -156,6 +240,8 @@
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
             .js .reveal { opacity: 1; transform: none; transition: none; }
+            .js .intro { opacity: 1; transform: none; animation: none; }
+            .aurora span, .chip, .marquee-track, .shimmer, .drift-a, .drift-b { animation: none !important; }
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
@@ -165,11 +251,16 @@
     </style>
 </head>
 <body class="font-sans antialiased relative">
+    <div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+    <div class="grain" aria-hidden="true"></div>
+    <div id="scroll-progress" aria-hidden="true"></div>
+    <div id="cursor-dot" aria-hidden="true"></div>
+    <div id="cursor-ring" aria-hidden="true"></div>
 
     <a href="#konten" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-3 focus:rounded-xl focus:bg-ink focus:text-white focus:shadow-lift">Lewati ke konten utama</a>
 
     <!-- Navbar -->
-    <header x-data="{ open: false }" @keydown.escape.window="open = false" class="fixed inset-x-0 top-0 z-50 glass-nav border-b border-slate-900/[0.06]">
+    <header id="site-header" x-data="{ open: false }" @keydown.escape.window="open = false" class="fixed inset-x-0 top-0 z-50 glass-nav border-b border-slate-900/[0.06] transition-shadow duration-300">
         <nav class="max-w-6xl mx-auto px-5 sm:px-8" aria-label="Navigasi utama">
             <div class="flex justify-between items-center h-16 md:h-[72px]">
                 <a href="#" class="flex items-center gap-2.5" aria-label="Nexamind.ai, ke atas halaman">
@@ -184,7 +275,7 @@
                     <a href="#produk" class="px-4 py-2 rounded-full text-[15px] font-medium text-slate-600 hover:text-ink hover:bg-slate-900/[0.04] transition-colors duration-200">Produk</a>
                     <a href="#cara-order" class="px-4 py-2 rounded-full text-[15px] font-medium text-slate-600 hover:text-ink hover:bg-slate-900/[0.04] transition-colors duration-200">Cara Beli</a>
                     <a href="#faq" class="px-4 py-2 rounded-full text-[15px] font-medium text-slate-600 hover:text-ink hover:bg-slate-900/[0.04] transition-colors duration-200">FAQ</a>
-                    <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" class="ml-3 inline-flex items-center gap-2 h-11 px-5 rounded-full bg-ink text-white text-[15px] font-semibold hover:bg-slate-800 transition-colors duration-200 shadow-soft">
+                    <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" class="shine ml-3 inline-flex items-center gap-2 h-11 px-5 rounded-full bg-ink text-white text-[15px] font-semibold hover:bg-slate-800 transition-colors duration-200 shadow-soft">
                         Beli Sekarang
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
                     </a>
@@ -221,27 +312,49 @@
     <main id="konten">
 
     <!-- Hero -->
-    <section class="relative pt-36 pb-12 md:pt-48 md:pb-16 overflow-hidden">
+    <section id="hero" class="hero relative pt-36 pb-12 md:pt-48 md:pb-16 overflow-hidden">
         <div class="absolute inset-0 backdrop-grid pointer-events-none" aria-hidden="true"></div>
+        <div class="hero-spot" aria-hidden="true"></div>
         <div class="absolute -top-40 left-1/2 -translate-x-[85%] w-[600px] h-[600px] rounded-full bg-brand-300/30 blur-[120px] pointer-events-none" aria-hidden="true"></div>
         <div class="absolute -top-56 left-1/2 -translate-x-1/2 w-[420px] h-[420px] rounded-full bg-aqua-300/20 blur-[110px] pointer-events-none" aria-hidden="true"></div>
         <div class="absolute -top-24 left-1/2 translate-x-[5%] w-[520px] h-[520px] rounded-full bg-accent/25 blur-[120px] pointer-events-none" aria-hidden="true"></div>
+        <canvas id="neural" aria-hidden="true"></canvas>
+
+        <!-- Floating chips (decorative, wide screens only) -->
+        <div class="hidden xl:block absolute inset-0 max-w-[1240px] mx-auto pointer-events-none" aria-hidden="true">
+            <div class="chip" data-depth="22" style="left: 2%; top: 30%;">
+                <img src="./assets/nexamind-mark.png" alt="" width="359" height="220" class="h-6 w-auto">
+                <span><span class="block text-sm font-semibold text-ink leading-tight">Tools AI siap pakai</span><span class="block text-xs text-slate-500">Konten instan &amp; storyboard</span></span>
+            </div>
+            <div class="chip" data-depth="-18" style="right: 2%; top: 34%;">
+                <span class="h-9 px-2.5 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-sm">700+</span>
+                <span><span class="block text-sm font-semibold text-ink leading-tight">Produk digital</span><span class="block text-xs text-slate-500">Worksheet, game, story book</span></span>
+            </div>
+            <div class="chip" data-depth="-14" style="left: 5%; top: 66%;">
+                <span class="w-9 h-9 rounded-xl bg-aqua-50 text-aqua-600 flex items-center justify-center"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span>
+                <span><span class="block text-sm font-semibold text-ink leading-tight">Lifetime access</span><span class="block text-xs text-slate-500">Sekali bayar, selamanya</span></span>
+            </div>
+            <div class="chip" data-depth="20" style="right: 5%; top: 70%;">
+                <span class="w-9 h-9 rounded-xl bg-accent-light text-accent-dark flex items-center justify-center"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0z"/></svg></span>
+                <span><span class="block text-sm font-semibold text-ink leading-tight">Komunitas eksklusif</span><span class="block text-xs text-slate-500">Diskusi &amp; update materi</span></span>
+            </div>
+        </div>
 
         <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
             <div class="text-center max-w-4xl mx-auto">
-                <p class="inline-flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-full bg-white/80 border border-slate-900/[0.07] shadow-soft text-sm font-medium text-slate-700 mb-8">
+                <p class="intro inline-flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-full bg-white/80 border border-slate-900/[0.07] shadow-soft text-sm font-medium text-slate-700 mb-8" style="--d: 80ms">
                     <span class="px-2 py-0.5 rounded-full bg-aqua-50 text-aqua-700 text-xs font-semibold">Baru</span>
                     Masa Depan Edukasi &amp; Bisnis Digital
                 </p>
                 <h1 class="text-[2.5rem] leading-[1.08] sm:text-6xl md:text-7xl md:leading-[1.04] font-bold tracking-[-0.035em] text-ink text-balance">
-                    Masa depan kamu yang menentukan,
-                    <span class="block mt-1 font-serif italic font-semibold tracking-[-0.01em] text-gradient pb-2 text-[1.12em]">pilihan ada ditanganmu!</span>
+                    <span class="intro block" style="--d: 200ms">Masa depan kamu yang menentukan,</span>
+                    <span class="intro block mt-1 font-serif italic font-semibold tracking-[-0.01em] text-gradient shimmer pb-2 text-[1.12em]" style="--d: 360ms">pilihan ada ditanganmu!</span>
                 </h1>
-                <p class="mt-6 text-lg md:text-xl leading-relaxed text-slate-600 max-w-2xl mx-auto">
+                <p class="intro mt-6 text-lg md:text-xl leading-relaxed text-slate-600 max-w-2xl mx-auto" style="--d: 500ms">
                     Ubah cara belajar anak menjadi menyenangkan dan raih peluang cuan dari rumah dengan bundel produk digital &amp; tools AI premium kami.
                 </p>
-                <div class="mt-10 flex flex-col sm:flex-row justify-center gap-3">
-                    <a href="#produk" class="group inline-flex items-center justify-center gap-2 h-14 px-8 rounded-full bg-ink text-white font-semibold text-base hover:bg-slate-800 shadow-lift transition-colors duration-200">
+                <div class="intro mt-10 flex flex-col sm:flex-row justify-center gap-3" style="--d: 640ms">
+                    <a href="#produk" data-magnetic class="shine group inline-flex items-center justify-center gap-2 h-14 px-8 rounded-full bg-ink text-white font-semibold text-base hover:bg-slate-800 shadow-lift transition-colors duration-200">
                         Lihat Katalog Produk
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 transition-transform duration-200 group-hover:translate-y-0.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
                     </a>
@@ -251,7 +364,7 @@
                 </div>
 
                 <!-- Audiences -->
-                <div class="mt-20">
+                <div class="intro mt-20" style="--d: 780ms">
                     <p class="text-xs font-semibold text-slate-500 uppercase tracking-[0.2em] mb-6">Solusi tepat untuk</p>
                     <ul class="flex flex-wrap justify-center gap-3">
                         <li class="inline-flex items-center gap-2.5 h-11 px-5 rounded-full bg-white/70 border border-slate-900/[0.07] text-slate-700 font-medium">
@@ -268,6 +381,18 @@
                         </li>
                     </ul>
                 </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Tools marquee -->
+    <section class="relative py-8 border-y border-slate-900/[0.06] bg-white/60 backdrop-blur-sm" aria-labelledby="marquee-judul">
+        <p id="marquee-judul" class="text-center text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 mb-5">Kuasai tools AI populer</p>
+        <div class="marquee">
+            <div class="marquee-track">
+                <ul class="flex"><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Midjourney<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">DALL·E 3<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Runway<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">ChatGPT<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Jasper<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Grammarly<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Canva<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Adobe Firefly<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Figma AI<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Descript<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Pictory<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">CapCut AI<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Perplexity<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Elicit<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Consensus<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Copy.ai<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Predis.ai<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Surfer SEO<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Zapier<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Make<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">n8n<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Julius AI<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Tableau GPT<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li></ul>
+                <ul class="flex" aria-hidden="true"><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Midjourney<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">DALL·E 3<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Runway<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">ChatGPT<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Jasper<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Grammarly<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Canva<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Adobe Firefly<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Figma AI<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Descript<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Pictory<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">CapCut AI<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Perplexity<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Elicit<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Consensus<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Copy.ai<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Predis.ai<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Surfer SEO<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Zapier<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Make<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">n8n<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Julius AI<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li><li class="flex items-center gap-10 pr-10 text-lg font-semibold text-slate-400 whitespace-nowrap">Tableau GPT<span class="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-brand-400 to-accent" aria-hidden="true"></span></li></ul>
             </div>
         </div>
     </section>
@@ -309,7 +434,7 @@
                     <dl class="mt-10 grid grid-cols-2 divide-x divide-slate-900/[0.08] border-y border-slate-900/[0.08]">
                         <div class="py-6 pr-6">
                             <dt class="text-sm text-slate-500">Produk digital tersedia</dt>
-                            <dd class="mt-1 text-4xl font-bold tracking-tight text-ink">700<span class="text-aqua-500">+</span></dd>
+                            <dd class="mt-1 text-4xl font-bold tracking-tight text-ink"><span data-count="700">700</span><span class="text-aqua-500">+</span></dd>
                         </div>
                         <div class="py-6 pl-6">
                             <dt class="text-sm text-slate-500">Edukasi &amp; bisnis</dt>
@@ -331,7 +456,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <!-- 1 -->
-                <article class="md:col-span-2 relative overflow-hidden rounded-[28px] p-8 md:p-10 bg-gradient-to-br from-brand-50 to-white border border-brand-100 min-h-[260px] flex flex-col justify-end reveal">
+                <article class="spot md:col-span-2 relative overflow-hidden rounded-[28px] p-8 md:p-10 bg-gradient-to-br from-brand-50 to-white border border-brand-100 min-h-[260px] flex flex-col justify-end reveal">
                     <div class="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-brand-200/50 blur-3xl" aria-hidden="true"></div>
                     <span class="absolute top-8 left-8 md:top-10 md:left-10 w-12 h-12 rounded-2xl bg-white shadow-soft text-brand-600 flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" /></svg>
@@ -343,7 +468,7 @@
                 </article>
 
                 <!-- 2 -->
-                <article class="rounded-[28px] p-8 bg-[#fbfcfe] border border-slate-900/[0.07] min-h-[260px] flex flex-col justify-between reveal">
+                <article class="spot rounded-[28px] p-8 bg-[#fbfcfe] border border-slate-900/[0.07] min-h-[260px] flex flex-col justify-between reveal">
                     <span class="w-12 h-12 rounded-2xl bg-white shadow-soft text-aqua-600 flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
                     </span>
@@ -354,7 +479,7 @@
                 </article>
 
                 <!-- 3 -->
-                <article class="rounded-[28px] p-8 bg-[#fbfcfe] border border-slate-900/[0.07] min-h-[260px] flex flex-col justify-between reveal">
+                <article class="spot rounded-[28px] p-8 bg-[#fbfcfe] border border-slate-900/[0.07] min-h-[260px] flex flex-col justify-between reveal">
                     <span class="w-12 h-12 rounded-2xl bg-white shadow-soft text-accent flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" /></svg>
                     </span>
@@ -365,7 +490,7 @@
                 </article>
 
                 <!-- 4 -->
-                <article class="md:col-span-2 relative overflow-hidden rounded-[28px] p-8 md:p-10 bg-ink text-white min-h-[260px] flex flex-col justify-between reveal">
+                <article class="spot spot-dark md:col-span-2 relative overflow-hidden rounded-[28px] p-8 md:p-10 bg-ink text-white min-h-[260px] flex flex-col justify-between reveal">
                     <div class="absolute inset-0 opacity-[0.07]" style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 28px 28px;" aria-hidden="true"></div>
                     <div class="absolute -bottom-24 -right-16 w-80 h-80 rounded-full bg-accent/30 blur-3xl" aria-hidden="true"></div>
                     <div class="relative flex justify-between items-start gap-4">
@@ -395,7 +520,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
 
                 <!-- Kategori 1: Produk Digital -->
-                <article class="group flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft hover:shadow-lift transition-shadow duration-300 overflow-hidden reveal">
+                <article class="spot group flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft hover:shadow-lift transition-shadow duration-300 overflow-hidden reveal">
                     <a href="./assets/produk-digital.jpg" target="_blank" rel="noopener" class="relative block aspect-[3/2] overflow-hidden bg-brand-100" aria-label="Lihat gambar Produk Digital ukuran penuh">
                         <img src="./assets/produk-digital.jpg" alt="Ilustrasi produk digital: seorang kreator bekerja di laptop dikelilingi e-book, tablet, dan aplikasi" width="736" height="1312" loading="lazy" decoding="async"
                              class="absolute inset-0 w-full h-full object-cover object-[50%_62%] transition-transform duration-500 group-hover:scale-[1.03]">
@@ -423,7 +548,7 @@
                                 <span><strong class="font-semibold text-ink">Akses Eksklusif:</strong> Bergabung dengan Group Komunitas Nexamind.</span>
                             </li>
                         </ul>
-                        <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 h-14 px-6 rounded-full bg-ink text-white font-semibold hover:bg-brand-700 transition-colors duration-200">
+                        <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" class="shine inline-flex items-center justify-center gap-2 h-14 px-6 rounded-full bg-ink text-white font-semibold hover:bg-brand-700 transition-colors duration-200">
                             Lihat Paket di Lynk.id
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
                         </a>
@@ -431,7 +556,7 @@
                 </article>
 
                 <!-- Kategori 2: Tools AI -->
-                <article class="group flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft hover:shadow-lift transition-shadow duration-300 overflow-hidden reveal">
+                <article class="spot group flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft hover:shadow-lift transition-shadow duration-300 overflow-hidden reveal">
                     <a href="./assets/tools-ai.jpg" target="_blank" rel="noopener" class="relative block aspect-[3/2] overflow-hidden bg-ink" aria-label="Lihat gambar daftar Tools AI ukuran penuh">
                         <img src="./assets/tools-ai.jpg" alt="Daftar AI tools untuk setiap pekerjaan: 8 kategori (Create, Write, Design, Edit, Research, Market, Automate, Analyze) dengan 24 tools seperti Midjourney, ChatGPT, Canva, CapCut AI, Perplexity, Copy.ai, Zapier dan Julius AI" width="1800" height="1200" loading="lazy" decoding="async"
                              class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]">
@@ -459,7 +584,7 @@
                                 <span><strong class="font-semibold text-ink">Mega Bundling AI:</strong> Termasuk 3 modul di atas + Bonus Tutorial buat Web, Cuan dari Lynk.id &amp; Strategi Promosi.</span>
                             </li>
                         </ul>
-                        <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 h-14 px-6 rounded-full bg-ink text-white font-semibold hover:bg-accent-dark transition-colors duration-200">
+                        <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" class="shine inline-flex items-center justify-center gap-2 h-14 px-6 rounded-full bg-ink text-white font-semibold hover:bg-accent-dark transition-colors duration-200">
                             Lihat Paket di Lynk.id
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
                         </a>
@@ -537,7 +662,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <figure class="flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft p-8 reveal">
+                <figure class="spot flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft p-8 reveal">
                     <div class="flex gap-0.5 text-amber-500 mb-6" role="img" aria-label="Rating 5 dari 5">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
@@ -555,7 +680,7 @@
                     </figcaption>
                 </figure>
 
-                <figure class="flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft p-8 reveal">
+                <figure class="spot flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft p-8 reveal">
                     <div class="flex gap-0.5 text-amber-500 mb-6" role="img" aria-label="Rating 5 dari 5">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
@@ -573,7 +698,7 @@
                     </figcaption>
                 </figure>
 
-                <figure class="flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft p-8 reveal">
+                <figure class="spot flex flex-col rounded-[28px] bg-white border border-slate-900/[0.07] shadow-soft p-8 reveal">
                     <div class="flex gap-0.5 text-amber-500 mb-6" role="img" aria-label="Rating 5 dari 5">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
@@ -648,15 +773,15 @@
     <section class="px-5 sm:px-8 pb-24 md:pb-32 bg-white">
         <div class="relative max-w-[68rem] mx-auto overflow-hidden rounded-[32px] bg-ink px-8 py-20 md:py-28 text-center reveal">
             <div class="absolute inset-0 opacity-[0.06]" style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 40px 40px;" aria-hidden="true"></div>
-            <div class="absolute -top-40 left-1/2 -translate-x-[75%] w-[520px] h-[520px] rounded-full bg-brand-500/35 blur-[110px] pointer-events-none" aria-hidden="true"></div>
-            <div class="absolute -bottom-48 left-1/2 -translate-x-[10%] w-[520px] h-[520px] rounded-full bg-accent/30 blur-[110px] pointer-events-none" aria-hidden="true"></div>
+            <div class="absolute -top-40 left-1/2 -translate-x-[75%] w-[520px] h-[520px] pointer-events-none" aria-hidden="true"><div class="w-full h-full rounded-full drift-a" style="background: radial-gradient(closest-side, rgba(10, 99, 238, .45), transparent);"></div></div>
+            <div class="absolute -bottom-48 left-1/2 -translate-x-[10%] w-[520px] h-[520px] pointer-events-none" aria-hidden="true"><div class="w-full h-full rounded-full drift-b" style="background: radial-gradient(closest-side, rgba(161, 110, 236, .4), transparent);"></div></div>
 
             <div class="relative max-w-3xl mx-auto">
                 <h2 class="text-4xl md:text-6xl md:leading-[1.05] font-bold tracking-[-0.035em] text-white text-balance">
                     Siap menentukan <span class="font-serif italic font-semibold text-[1.12em] bg-gradient-to-r from-brand-300 via-aqua-300 to-accent bg-clip-text text-transparent">masa depanmu?</span>
                 </h2>
                 <p class="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed max-w-2xl mx-auto">Jangan tunda lagi. Berikan edukasi terbaik untuk anak dan mulai perjalanan digital creatormu hari ini.</p>
-                <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" class="group mt-10 inline-flex items-center gap-3 h-14 md:h-16 px-8 md:px-10 rounded-full bg-white text-ink font-semibold text-base md:text-lg hover:bg-brand-50 shadow-[0_0_48px_-8px_rgba(15,230,219,0.5)] transition-colors duration-200">
+                <a href="https://lynk.id/zulnandigipreneur" target="_blank" rel="noopener noreferrer" data-magnetic class="shine group mt-10 inline-flex items-center gap-3 h-14 md:h-16 px-8 md:px-10 rounded-full bg-white text-ink font-semibold text-base md:text-lg hover:bg-brand-50 shadow-[0_0_48px_-8px_rgba(15,230,219,0.5)] transition-colors duration-200">
                     Beli Mega Bundling Sekarang
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
                 </a>
@@ -706,12 +831,198 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
+                        // Drop the stagger delay once revealed so hover effects respond instantly
+                        setTimeout(() => { entry.target.style.transitionDelay = ''; }, 900);
                         obs.unobserve(entry.target);
                     }
                 });
             }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
             els.forEach(el => observer.observe(el));
         });
+
+        // ===== Living layer =====
+        (() => {
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            const root = document.documentElement;
+
+            // Stagger reveals that share a parent
+            document.querySelectorAll('.reveal').forEach(el => {
+                const sibs = [...el.parentElement.children].filter(c => c.classList.contains('reveal'));
+                const i = sibs.indexOf(el);
+                if (i > 0) el.style.transitionDelay = Math.min(i * 90, 360) + 'ms';
+            });
+
+            // Scroll progress + header shadow
+            const bar = document.getElementById('scroll-progress');
+            const header = document.getElementById('site-header');
+            let ticking = false;
+            const onScroll = () => {
+                const max = document.documentElement.scrollHeight - innerHeight;
+                bar.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+                header.classList.toggle('is-scrolled', scrollY > 8);
+                ticking = false;
+            };
+            addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+            onScroll();
+
+            // Count-up numbers
+            const counters = document.querySelectorAll('[data-count]');
+            if (!reduce && 'IntersectionObserver' in window) {
+                const co = new IntersectionObserver((entries, obs) => entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    obs.unobserve(e.target);
+                    const end = +e.target.dataset.count, t0 = performance.now(), dur = 1400;
+                    const step = t => {
+                        const k = Math.min(1, (t - t0) / dur);
+                        e.target.textContent = Math.round(end * (1 - Math.pow(1 - k, 3)));
+                        if (k < 1) requestAnimationFrame(step);
+                    };
+                    requestAnimationFrame(step);
+                }), { threshold: 0.6 });
+                counters.forEach(c => { c.textContent = '0'; co.observe(c); });
+            }
+
+            if (!finePointer) return; // the rest is pointer-driven
+
+            // Card spotlight follows the pointer
+            document.querySelectorAll('.spot').forEach(card => {
+                card.addEventListener('pointermove', e => {
+                    const r = card.getBoundingClientRect();
+                    card.style.setProperty('--x', `${e.clientX - r.left}px`);
+                    card.style.setProperty('--y', `${e.clientY - r.top}px`);
+                });
+            });
+
+            // Hero grid spotlight + chip parallax
+            const hero = document.getElementById('hero');
+            const chips = hero.querySelectorAll('.chip');
+            hero.addEventListener('pointermove', e => {
+                const r = hero.getBoundingClientRect();
+                hero.style.setProperty('--mx', `${e.clientX - r.left}px`);
+                hero.style.setProperty('--my', `${e.clientY - r.top}px`);
+                if (reduce) return;
+                const nx = (e.clientX - r.left) / r.width - .5, ny = (e.clientY - r.top) / r.height - .5;
+                chips.forEach(c => {
+                    const d = +c.dataset.depth;
+                    c.style.setProperty('--px', `${nx * d}px`);
+                    c.style.setProperty('--py', `${ny * d}px`);
+                });
+            });
+
+            if (reduce) return;
+
+            // Magnetic primary buttons (pull clamped to 30%)
+            document.querySelectorAll('[data-magnetic]').forEach(btn => {
+                btn.addEventListener('pointermove', e => {
+                    const r = btn.getBoundingClientRect();
+                    btn.style.setProperty('--tx', `${(e.clientX - r.left - r.width / 2) * .3}px`);
+                    btn.style.setProperty('--ty', `${(e.clientY - r.top - r.height / 2) * .3}px`);
+                });
+                btn.addEventListener('pointerleave', () => { btn.style.setProperty('--tx', '0px'); btn.style.setProperty('--ty', '0px'); });
+            });
+
+            // Custom cursor: dot follows exactly, ring eases behind
+            const dot = document.getElementById('cursor-dot');
+            const ring = document.getElementById('cursor-ring');
+            root.classList.add('has-cursor');
+            let mx = -100, my = -100, rx = -100, ry = -100;
+            addEventListener('pointermove', e => {
+                if (e.pointerType !== 'mouse') return;
+                mx = e.clientX; my = e.clientY;
+                dot.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
+                root.classList.add('cursor-visible');
+            }, { passive: true });
+            document.addEventListener('pointerleave', () => root.classList.remove('cursor-visible'));
+            addEventListener('blur', () => root.classList.remove('cursor-visible'));
+            addEventListener('pointerdown', () => root.classList.add('cursor-down'));
+            addEventListener('pointerup', () => root.classList.remove('cursor-down'));
+            const interactive = 'a, button, summary, [role="button"], input, label';
+            document.addEventListener('pointerover', e => root.classList.toggle('cursor-hover', !!e.target.closest(interactive)));
+            let following = false;
+            const follow = () => {
+                rx += (mx - rx) * .18; ry += (my - ry) * .18;
+                ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+                if (Math.abs(mx - rx) + Math.abs(my - ry) > .3) requestAnimationFrame(follow); else following = false;
+            };
+            addEventListener('pointermove', () => { if (!following) { following = true; requestAnimationFrame(follow); } }, { passive: true });
+        })();
+
+        // ===== Hero neural network =====
+        (() => {
+            const canvas = document.getElementById('neural');
+            if (!canvas || !canvas.getContext) return;
+            const ctx = canvas.getContext('2d');
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const hero = document.getElementById('hero');
+            const colors = ['10, 99, 238', '28, 164, 185', '161, 110, 236'];
+            const mouse = { x: -9999, y: -9999 };
+            let w = 0, h = 0, nodes = [], running = false, raf = 0;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+            function resize() {
+                const r = canvas.getBoundingClientRect();
+                w = r.width; h = r.height;
+                canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                const n = Math.round(Math.max(28, Math.min(90, (w * h) / 15000)));
+                nodes = Array.from({ length: n }, () => ({
+                    x: Math.random() * w, y: Math.random() * h,
+                    vx: (Math.random() - .5) * .3, vy: (Math.random() - .5) * .3,
+                    r: Math.random() * 1.6 + 1, c: colors[(Math.random() * colors.length) | 0]
+                }));
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                const link = Math.min(140, w / 8);
+                for (let i = 0; i < nodes.length; i++) {
+                    const a = nodes[i];
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const b = nodes[j], dx = a.x - b.x, dy = a.y - b.y, d = Math.hypot(dx, dy);
+                        if (d < link) {
+                            ctx.strokeStyle = `rgba(${a.c}, ${(1 - d / link) * .22})`;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+                        }
+                    }
+                    const md = Math.hypot(a.x - mouse.x, a.y - mouse.y);
+                    if (md < 180) {
+                        ctx.strokeStyle = `rgba(${a.c}, ${(1 - md / 180) * .5})`;
+                        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+                    }
+                    ctx.fillStyle = `rgba(${a.c}, .65)`;
+                    ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+
+            function tick() {
+                for (const n of nodes) {
+                    const dx = mouse.x - n.x, dy = mouse.y - n.y, d = Math.hypot(dx, dy);
+                    if (d < 180 && d > 1) { n.vx += dx / d * .012; n.vy += dy / d * .012; }
+                    n.vx *= .985; n.vy *= .985;
+                    const sp = Math.hypot(n.vx, n.vy);
+                    if (sp < .12) { n.vx += (Math.random() - .5) * .05; n.vy += (Math.random() - .5) * .05; }
+                    n.x += n.vx; n.y += n.vy;
+                    if (n.x < 0 || n.x > w) n.vx *= -1;
+                    if (n.y < 0 || n.y > h) n.vy *= -1;
+                }
+                draw();
+                raf = requestAnimationFrame(tick);
+            }
+
+            function start() { if (!running && !reduce) { running = true; raf = requestAnimationFrame(tick); } }
+            function stop() { running = false; cancelAnimationFrame(raf); }
+
+            resize(); draw();
+            let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { resize(); draw(); }, 150); });
+            hero.addEventListener('pointermove', e => { const r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+            hero.addEventListener('pointerleave', () => { mouse.x = mouse.y = -9999; });
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver(([e]) => e.isIntersecting ? start() : stop()).observe(hero);
+            } else start();
+            document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+        })();
     </script>
 
 </body>
