@@ -1,0 +1,113 @@
+{
+  "title": "AI Tools",
+  "subtitle": "For Every Job",
+  "center": {
+    "label": "AI",
+    "tagline": "Work Smarter, Do More"
+  },
+  "categories": [
+    {
+      "id": "create",
+      "number": "01",
+      "name": "Create",
+      "icon": "💡",
+      "color": "#1aa3c8",
+      "tools": [
+        { "name": "Midjourney", "description": "AI image generation", "badge": "M", "badgeColor": "#1d1d24" },
+        { "name": "DALL·E 3", "description": "Create stunning visuals", "badge": "D", "badgeColor": "#10a37f" },
+        { "name": "Runway", "description": "Generate videos", "badge": "R", "badgeColor": "#25252b" }
+      ]
+    },
+    {
+      "id": "write",
+      "number": "02",
+      "name": "Write",
+      "icon": "✍️",
+      "color": "#2b5fc4",
+      "tools": [
+        { "name": "ChatGPT", "description": "Content & ideas", "badge": "C", "badgeColor": "#10a37f" },
+        { "name": "Jasper", "description": "Marketing copy", "badge": "J", "badgeColor": "#2b2750" },
+        { "name": "Grammarly", "description": "Better writing", "badge": "G", "badgeColor": "#15b08a" }
+      ]
+    },
+    {
+      "id": "design",
+      "number": "03",
+      "name": "Design",
+      "icon": "🎨",
+      "color": "#7b4bb7",
+      "tools": [
+        { "name": "Canva", "description": "Design anything", "badge": "C", "badgeColor": "#00b4c8" },
+        { "name": "Adobe Firefly", "description": "AI designs", "badge": "A", "badgeColor": "#e8261b" },
+        { "name": "Figma AI", "description": "Smart design", "badge": "F", "badgeColor": "#8a4fe0" }
+      ]
+    },
+    {
+      "id": "edit",
+      "number": "04",
+      "name": "Edit",
+      "icon": "🎬",
+      "color": "#d6456f",
+      "tools": [
+        { "name": "Descript", "description": "Audio & video editing", "badge": "D", "badgeColor": "#3b6fe0" },
+        { "name": "Pictory", "description": "AI video creation", "badge": "P", "badgeColor": "#7c4dff" },
+        { "name": "CapCut AI", "description": "Smart video editing", "badge": "C", "badgeColor": "#17171c" }
+      ]
+    },
+    {
+      "id": "research",
+      "number": "05",
+      "name": "Research",
+      "icon": "🔍",
+      "color": "#ef8a2a",
+      "tools": [
+        { "name": "Perplexity", "description": "Research any question", "badge": "P", "badgeColor": "#1f7a88" },
+        { "name": "Elicit", "description": "Research assistant", "badge": "E", "badgeColor": "#1f9d8b" },
+        { "name": "Consensus", "description": "AI academic search", "badge": "C", "badgeColor": "#2a9d8f" }
+      ]
+    },
+    {
+      "id": "market",
+      "number": "06",
+      "name": "Market",
+      "icon": "📣",
+      "color": "#e3a812",
+      "tools": [
+        { "name": "Copy.ai", "description": "AI copywriting", "badge": "C", "badgeColor": "#17171c" },
+        { "name": "Predis.ai", "description": "Social media content", "badge": "P", "badgeColor": "#3b82f6" },
+        { "name": "Surfer SEO", "description": "SEO content optimization", "badge": "S", "badgeColor": "#f0524f" }
+      ]
+    },
+    {
+      "id": "automate",
+      "number": "07",
+      "name": "Automate",
+      "icon": "⚙️",
+      "color": "#3f9d4a",
+      "tools": [
+        { "name": "Zapier", "description": "Workflow automation", "badge": "Z", "badgeColor": "#ff4a00" },
+        { "name": "Make", "description": "Automate anything", "badge": "M", "badgeColor": "#6d4bd8" },
+        { "name": "n8n", "description": "Automated workflows", "badge": "n", "badgeColor": "#ea4b71" }
+      ]
+    },
+    {
+      "id": "analyze",
+      "number": "08",
+      "name": "Analyze",
+      "icon": "📊",
+      "color": "#1c8a63",
+      "tools": [
+        { "name": "ChatGPT", "description": "Data insights", "badge": "C", "badgeColor": "#10a37f" },
+        { "name": "Julius AI", "description": "Analyze anything", "badge": "J", "badgeColor": "#2563eb" },
+        { "name": "Tableau GPT", "description": "Smart data analysis", "badge": "T", "badgeColor": "#e97627" }
+      ]
+    }
+  ],
+  "benefits": [
+    { "icon": "🚀", "title": "Save Time", "description": "Automate the busy work" },
+    { "icon": "📈", "title": "Boost Productivity", "description": "Get more done every day" },
+    { "icon": "🎯", "title": "Elevate Quality", "description": "Create professional results" },
+    { "icon": "🏆", "title": "Stay Ahead", "description": "Leverage the power of AI" }
+  ],
+  "tagline": "Choose. Create. Achieve."
+}
