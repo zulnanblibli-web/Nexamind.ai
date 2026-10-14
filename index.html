@@ -20,6 +20,7 @@
 
     <!-- Alpine.js (for interactions) -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
+    <script defer src="./assets/vendor/motion-13.4.6.min.js"></script>
 
     <!-- Tailwind Config: brand colors unchanged -->
     <script>
@@ -171,10 +172,29 @@
             background: linear-gradient(90deg, #0a63ee, #1ca4b9, #a16eec); }
         header.is-scrolled { box-shadow: 0 10px 30px -18px rgba(15, 23, 42, .35); }
 
-        /* Hero: neural canvas + cursor spotlight on the grid */
-        #neural { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
-            -webkit-mask-image: radial-gradient(ellipse 48% 42% at 50% 40%, rgba(0,0,0,.25), #000 78%);
-                    mask-image: radial-gradient(ellipse 48% 42% at 50% 40%, rgba(0,0,0,.25), #000 78%); }
+        /* Hero: animated infinity paths (Motion) + cursor spotlight on the grid */
+        .infinity-bg { position: absolute; inset: 0; pointer-events: none;
+            -webkit-mask-image: radial-gradient(ellipse 46% 40% at 50% 42%, rgba(0,0,0,.15), #000 82%);
+                    mask-image: radial-gradient(ellipse 46% 40% at 50% 42%, rgba(0,0,0,.15), #000 82%); }
+        .infinity-bg canvas { display: block; width: 100%; height: 100%; }
+        .infinity-orb { position: absolute; top: 46%; left: 50%; width: 640px; height: 640px; margin: -320px 0 0 -320px; pointer-events: none;
+            animation: orb-spin 20s linear infinite;
+            -webkit-mask-image: radial-gradient(closest-side, #000 45%, transparent);
+                    mask-image: radial-gradient(closest-side, #000 45%, transparent);
+            background:
+                radial-gradient(circle at 32% 34%, rgba(10, 99, 238, .20), transparent 58%),
+                radial-gradient(circle at 70% 40%, rgba(161, 110, 236, .22), transparent 56%),
+                radial-gradient(circle at 50% 74%, rgba(15, 230, 219, .16), transparent 58%); }
+        @keyframes orb-spin { 0% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.2) rotate(180deg); } 100% { transform: scale(1) rotate(360deg); } }
+        .infinity-dot { position: absolute; animation: dot-float 3s ease-in-out infinite; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; background: rgba(10, 99, 238, .35); box-shadow: 0 0 12px rgba(10, 99, 238, .35); }
+        @keyframes dot-float { 0%, 100% { transform: translateY(-20px); opacity: .3; } 50% { transform: translateY(20px); opacity: .8; } }
+        .infinity-dot:nth-child(even) { background: rgba(161, 110, 236, .4); box-shadow: 0 0 12px rgba(161, 110, 236, .4); }
+        .hero-line { display: block; height: 4px; width: min(26rem, 80%); margin: 1.75rem auto 0; border-radius: 999px; transform-origin: 50% 50%;
+            background: linear-gradient(90deg, transparent, #0a63ee 22%, #1ca4b9 50%, #a16eec 78%, transparent); }
+        .js .hero-line { transform: scaleX(0); }
+        .ltr-word { display: inline-block; white-space: nowrap; }
+        .ltr { display: inline-block; will-change: transform; }
+        .js .ltr { opacity: 0; transform: translateY(100px); }
         .hero-spot { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .4s;
             background-image:
                 linear-gradient(to right, rgba(10, 99, 238, .16) 1px, transparent 1px),
@@ -257,7 +277,8 @@
             html { scroll-behavior: auto; }
             .js .reveal { opacity: 1; transform: none; transition: none; }
             .js .intro { opacity: 1; transform: none; animation: none; }
-            .aurora span, .chip, .marquee-track, .shimmer, .drift-a, .drift-b, .orb-ring, .orb-core, .orb-core img, .orb-spark { animation: none !important; }
+            .js .ltr, .js .hero-line { opacity: 1; transform: none; }
+            .aurora span, .chip, .marquee-track, .infinity-orb, .infinity-dot, .shimmer, .drift-a, .drift-b, .orb-ring, .orb-core, .orb-core img, .orb-spark { animation: none !important; }
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
@@ -334,7 +355,12 @@
         <div class="absolute -top-40 left-1/2 -translate-x-[85%] w-[600px] h-[600px] rounded-full bg-brand-300/30 blur-[120px] pointer-events-none" aria-hidden="true"></div>
         <div class="absolute -top-56 left-1/2 -translate-x-1/2 w-[420px] h-[420px] rounded-full bg-aqua-300/20 blur-[110px] pointer-events-none" aria-hidden="true"></div>
         <div class="absolute -top-24 left-1/2 translate-x-[5%] w-[520px] h-[520px] rounded-full bg-accent/25 blur-[120px] pointer-events-none" aria-hidden="true"></div>
-        <canvas id="neural" aria-hidden="true"></canvas>
+        <div class="infinity-orb" aria-hidden="true"></div>
+        <div class="infinity-bg" aria-hidden="true"><canvas></canvas></div>
+        <div class="absolute inset-0 max-w-5xl mx-auto pointer-events-none" aria-hidden="true">
+            <span class="infinity-dot" style="left: 20%; top: 30%"></span><span class="infinity-dot" style="left: 35%; top: 70%"></span><span class="infinity-dot" style="left: 50%; top: 22%"></span>
+            <span class="infinity-dot" style="left: 65%; top: 74%"></span><span class="infinity-dot" style="left: 80%; top: 32%"></span><span class="infinity-dot" style="left: 92%; top: 62%"></span>
+        </div>
 
         <!-- Floating chips (decorative, wide screens only) -->
         <div class="hidden xl:block absolute inset-0 max-w-[1240px] mx-auto pointer-events-none" aria-hidden="true">
@@ -363,9 +389,11 @@
                     Masa Depan Edukasi &amp; Bisnis Digital
                 </p>
                 <h1 class="text-[2.5rem] leading-[1.08] sm:text-6xl md:text-7xl md:leading-[1.04] font-bold tracking-[-0.035em] text-ink text-balance">
-                    <span class="intro block" style="--d: 200ms">Masa depan kamu yang menentukan,</span>
-                    <span class="intro block mt-1 font-serif italic font-semibold tracking-[-0.01em] text-gradient shimmer pb-2 text-[1.12em]" style="--d: 360ms">pilihan ada ditanganmu!</span>
+                    <span class="sr-only">Masa depan kamu yang menentukan, pilihan ada ditanganmu!</span>
+                    <span class="block" id="hero-letters" aria-hidden="true"><span class="ltr-word"><span class="ltr">M</span><span class="ltr">a</span><span class="ltr">s</span><span class="ltr">a</span></span> <span class="ltr-word"><span class="ltr">d</span><span class="ltr">e</span><span class="ltr">p</span><span class="ltr">a</span><span class="ltr">n</span></span> <span class="ltr-word"><span class="ltr">k</span><span class="ltr">a</span><span class="ltr">m</span><span class="ltr">u</span></span> <span class="ltr-word"><span class="ltr">y</span><span class="ltr">a</span><span class="ltr">n</span><span class="ltr">g</span></span> <span class="ltr-word"><span class="ltr">m</span><span class="ltr">e</span><span class="ltr">n</span><span class="ltr">e</span><span class="ltr">n</span><span class="ltr">t</span><span class="ltr">u</span><span class="ltr">k</span><span class="ltr">a</span><span class="ltr">n</span><span class="ltr">,</span></span></span>
+                    <span aria-hidden="true" class="intro block mt-1 font-serif italic font-semibold tracking-[-0.01em] text-gradient shimmer pb-2 text-[1.12em]" style="--d: 360ms">pilihan ada ditanganmu!</span>
                 </h1>
+                <span class="hero-line" aria-hidden="true"></span>
                 <p class="intro mt-6 text-lg md:text-xl leading-relaxed text-slate-600 max-w-2xl mx-auto" style="--d: 500ms">
                     Ubah cara belajar anak menjadi menyenangkan dan raih peluang cuan dari rumah dengan bundel produk digital &amp; tools AI premium kami.
                 </p>
@@ -1013,81 +1041,75 @@
             addEventListener('pointermove', () => { if (!following) { following = true; requestAnimationFrame(follow); } }, { passive: true });
         })();
 
-        // ===== Hero neural network =====
-        (() => {
-            const canvas = document.getElementById('neural');
-            if (!canvas || !canvas.getContext) return;
-            const ctx = canvas.getContext('2d');
+        // ===== Hero infinity background (Motion) =====
+        document.addEventListener('DOMContentLoaded', () => {
             const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const hero = document.getElementById('hero');
-            const colors = ['10, 99, 238', '28, 164, 185', '161, 110, 236'];
-            const mouse = { x: -9999, y: -9999 };
-            let w = 0, h = 0, nodes = [], running = false, raf = 0;
-            const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-            function resize() {
-                const r = canvas.getBoundingClientRect();
-                w = r.width; h = r.height;
+            // 36 infinity loops from the BackgroundPaths component, drawn on a canvas: the same
+            // pathLength [0, 1, 1, 0] / opacity [0, .6, .6, 0] cycle, far cheaper than 36 animated SVG strokes
+            const canvas = document.querySelector('.infinity-bg canvas');
+            const ctx = canvas.getContext('2d');
+            const NS = 'http://www.w3.org/2000/svg', cx = 348, cy = 158, measure = document.createElementNS(NS, 'path');
+            const loops = Array.from({ length: 36 }, (_, i) => {
+                const k = 200 + i * 10;
+                const d = `M ${cx - k} ${cy} C ${cx - k} ${cy - k * .5}, ${cx - k * .5} ${cy - k * .5}, ${cx} ${cy} C ${cx + k * .5} ${cy + k * .5}, ${cx + k} ${cy + k * .5}, ${cx + k} ${cy} C ${cx + k} ${cy - k * .5}, ${cx + k * .5} ${cy - k * .5}, ${cx} ${cy} C ${cx - k * .5} ${cy + k * .5}, ${cx - k} ${cy + k * .5}, ${cx - k} ${cy}`;
+                measure.setAttribute('d', d);
+                return { path: new Path2D(d), len: measure.getTotalLength(), width: .5 + i * .03, alpha: Math.min(1, .1 + i * .03), dur: 15 + i * .5, delay: i * .2 };
+            });
+            let w = 0, h = 0, m = [1, 0, 0, 1, 0, 0], grad;
+            const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+            const size = () => {
+                const r = canvas.getBoundingClientRect(); w = r.width; h = r.height;
                 canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
-                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-                const n = Math.round(Math.max(28, Math.min(90, (w * h) / 15000)));
-                nodes = Array.from({ length: n }, () => ({
-                    x: Math.random() * w, y: Math.random() * h,
-                    vx: (Math.random() - .5) * .3, vy: (Math.random() - .5) * .3,
-                    r: Math.random() * 1.6 + 1, c: colors[(Math.random() * colors.length) | 0]
-                }));
-            }
-
-            function draw() {
-                ctx.clearRect(0, 0, w, h);
-                const link = Math.min(140, w / 8);
-                for (let i = 0; i < nodes.length; i++) {
-                    const a = nodes[i];
-                    for (let j = i + 1; j < nodes.length; j++) {
-                        const b = nodes[j], dx = a.x - b.x, dy = a.y - b.y, d = Math.hypot(dx, dy);
-                        if (d < link) {
-                            ctx.strokeStyle = `rgba(${a.c}, ${(1 - d / link) * .22})`;
-                            ctx.lineWidth = 1;
-                            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-                        }
+                // Portrait screens stand the loop upright (a figure 8) so it fills the hero
+                if (h > w * 1.2) { const k = Math.min(h / 696, w / 316) * dpr; m = [0, k, -k, 0, (158 * k / dpr + w / 2) * dpr, (h / 2 - 348 * k / dpr) * dpr]; }
+                else { const k = Math.min(w / 696, h / 316); m = [k * dpr, 0, 0, k * dpr, (w - 696 * k) / 2 * dpr, (h - 316 * k) / 2 * dpr]; }
+                grad = ctx.createLinearGradient(0, 0, 696, 0);
+                grad.addColorStop(0, '#0a63ee'); grad.addColorStop(.5, '#1ca4b9'); grad.addColorStop(1, '#a16eec');
+            };
+            const draw = (ease, t) => {
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+                ctx.setTransform(...m);
+                ctx.strokeStyle = grad; ctx.lineCap = 'round';
+                for (const l of loops) {
+                    let drawn = 1, op = .18;
+                    if (ease) {
+                        const local = t - l.delay;
+                        if (local < 0) continue;
+                        const ph = (local % l.dur) / l.dur * 3, seg = Math.min(2, ph | 0), e = ease(ph - seg);
+                        drawn = seg === 0 ? e : seg === 1 ? 1 : 1 - e; op = .6 * drawn;
                     }
-                    const md = Math.hypot(a.x - mouse.x, a.y - mouse.y);
-                    if (md < 180) {
-                        ctx.strokeStyle = `rgba(${a.c}, ${(1 - md / 180) * .5})`;
-                        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
-                    }
-                    ctx.fillStyle = `rgba(${a.c}, .65)`;
-                    ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2); ctx.fill();
+                    if (drawn <= .001) continue;
+                    ctx.globalAlpha = l.alpha * op; ctx.lineWidth = l.width;
+                    ctx.setLineDash([l.len * drawn, l.len]);
+                    ctx.stroke(l.path);
                 }
+            };
+            const letters = [...document.querySelectorAll('#hero-letters .ltr-word')].map(w => [...w.children]);
+            const line = document.querySelector('.hero-line');
+            const M = window.Motion;
+            size();
+            if (!M || reduce) {
+                draw(null, 0);
+                addEventListener('resize', () => { size(); draw(null, 0); });
+                letters.flat().forEach(l => { l.style.opacity = 1; l.style.transform = 'none'; });
+                if (line) line.style.transform = 'none';
+                return;
             }
-
-            function tick() {
-                for (const n of nodes) {
-                    const dx = mouse.x - n.x, dy = mouse.y - n.y, d = Math.hypot(dx, dy);
-                    if (d < 180 && d > 1) { n.vx += dx / d * .012; n.vy += dy / d * .012; }
-                    n.vx *= .985; n.vy *= .985;
-                    const sp = Math.hypot(n.vx, n.vy);
-                    if (sp < .12) { n.vx += (Math.random() - .5) * .05; n.vy += (Math.random() - .5) * .05; }
-                    n.x += n.vx; n.y += n.vy;
-                    if (n.x < 0 || n.x > w) n.vx *= -1;
-                    if (n.y < 0 || n.y > h) n.vy *= -1;
-                }
-                draw();
-                raf = requestAnimationFrame(tick);
-            }
-
-            function start() { if (!running && !reduce) { running = true; raf = requestAnimationFrame(tick); } }
-            function stop() { running = false; cancelAnimationFrame(raf); }
-
-            resize(); draw();
-            let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { resize(); draw(); }, 150); });
-            hero.addEventListener('pointermove', e => { const r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
-            hero.addEventListener('pointerleave', () => { mouse.x = mouse.y = -9999; });
-            if ('IntersectionObserver' in window) {
-                new IntersectionObserver(([e]) => e.isIntersecting ? start() : stop()).observe(hero);
-            } else start();
+            const { animate } = M;
+            // Slow 15-32 s cycles: 30 fps looks the same and halves the paint work
+            let raf = 0, last = 0, on = false;
+            const t0 = performance.now();
+            const frame = now => { raf = requestAnimationFrame(frame); if (now - last < 32) return; last = now; draw(M.easeInOut, (now - t0) / 1000); };
+            const start = () => { if (!on) { on = true; raf = requestAnimationFrame(frame); } };
+            const stop = () => { on = false; cancelAnimationFrame(raf); };
+            addEventListener('resize', size);
+            if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => e.isIntersecting ? start() : stop()).observe(canvas); else start();
             document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
-        })();
+            document.querySelectorAll('.infinity-dot').forEach((d, i) => { d.style.animationDuration = `${3 + i}s`; d.style.animationDelay = `${i * .5}s`; });
+            letters.forEach((word, w) => word.forEach((l, j) =>
+                animate(l, { y: [100, 0], opacity: [0, 1] }, { type: 'spring', stiffness: 150, damping: 25, delay: .15 + w * .1 + j * .03 })));
+            if (line) animate(line, { scaleX: [0, 1] }, { delay: 1, duration: 1.5, ease: 'easeOut' });
+        });
     </script>
 
 </body>
