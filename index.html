@@ -172,6 +172,39 @@
             background: linear-gradient(90deg, #0a63ee, #1ca4b9, #a16eec); }
         header.is-scrolled { box-shadow: 0 10px 30px -18px rgba(15, 23, 42, .35); }
 
+        /* Founder header: banner photo with the profile copy in its open right side */
+        .founder { position: relative; isolation: isolate; overflow: hidden; background: #eaf3ff; }
+        .founder-media { position: relative; overflow: hidden; margin-top: 64px; aspect-ratio: 4 / 3; }
+        .founder-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 22% 30%; transform-origin: 30% 40%;
+            animation: founder-in 1.8s var(--ease-out) both, founder-breathe 18s ease-in-out 1.8s infinite alternate; }
+        @keyframes founder-in { from { transform: scale(1.08); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes founder-breathe { from { transform: scale(1); } to { transform: scale(1.04); } }
+        .founder-sheen { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .45) 50%, transparent 62%);
+            transform: translateX(-100%); animation: founder-sheen 9s var(--ease-out) 2.2s infinite; }
+        @keyframes founder-sheen { 0% { transform: translateX(-100%); } 35%, 100% { transform: translateX(100%); } }
+        .founder-copy { position: relative; padding: 2rem 0 3.5rem; }
+        .founder-eyebrow { display: inline-flex; align-items: center; gap: .6rem; padding: .4rem .9rem .4rem .5rem; border-radius: 999px; background: rgba(255, 255, 255, .85);
+            border: 1px solid rgba(10, 99, 238, .14); box-shadow: 0 6px 20px -12px rgba(10, 99, 238, .5); font-size: .8125rem; font-weight: 600; color: #2c3a52; }
+        .founder-eyebrow .live { position: relative; width: 8px; height: 8px; border-radius: 50%; background: #1ca4b9; }
+        .founder-eyebrow .live::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid rgba(28, 164, 185, .5); animation: founder-ping 2.4s ease-out infinite; }
+        @keyframes founder-ping { from { transform: scale(.6); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
+        .founder-tag { display: inline-flex; align-items: center; gap: .45rem; height: 2.25rem; padding: 0 .9rem; border-radius: 999px; background: rgba(255, 255, 255, .8);
+            border: 1px solid rgba(15, 23, 42, .07); font-size: .875rem; font-weight: 600; color: #334155; }
+        .founder-tag svg { width: 1rem; height: 1rem; color: #0a63ee; }
+        .founder-social { display: inline-flex; align-items: center; justify-content: center; width: 2.75rem; height: 2.75rem; border-radius: 999px; background: rgba(255, 255, 255, .85);
+            border: 1px solid rgba(15, 23, 42, .08); color: #1e2633; transition: color .2s, border-color .2s, transform .2s; }
+        .founder-social:hover { color: #0a63ee; border-color: rgba(10, 99, 238, .35); transform: translateY(-2px); }
+        @media (min-width: 1024px) {
+            .founder { min-height: clamp(560px, 40vw, 720px); display: flex; align-items: center; }
+            .founder-media { position: absolute; inset: 0; margin: 0; aspect-ratio: auto; }
+            .founder-img { object-position: 20% 35%; }
+            /* Soft light pool behind the copy keeps dark text at AA contrast over the blue waves */
+            .founder-media::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+                background: radial-gradient(60% 75% at 74% 52%, rgba(255, 255, 255, .86), rgba(255, 255, 255, .55) 55%, transparent 80%); }
+            .founder-copy { width: 50%; margin-left: auto; padding: 7.5rem 0 4rem; }
+        }
+        @media (min-width: 1440px) { .founder-copy { width: 46%; } }
+
         /* Hero: animated infinity paths (Motion) + cursor spotlight on the grid */
         .infinity-bg { position: absolute; inset: 0; pointer-events: none;
             -webkit-mask-image: radial-gradient(ellipse 46% 40% at 50% 42%, rgba(0,0,0,.15), #000 82%);
@@ -278,7 +311,7 @@
             .js .reveal { opacity: 1; transform: none; transition: none; }
             .js .intro { opacity: 1; transform: none; animation: none; }
             .js .ltr, .js .hero-line { opacity: 1; transform: none; }
-            .aurora span, .chip, .marquee-track, .infinity-orb, .infinity-dot, .shimmer, .drift-a, .drift-b, .orb-ring, .orb-core, .orb-core img, .orb-spark { animation: none !important; }
+            .aurora span, .chip, .marquee-track, .infinity-orb, .infinity-dot, .founder-img, .founder-sheen, .founder-eyebrow .live::after, .shimmer, .drift-a, .drift-b, .orb-ring, .orb-core, .orb-core img, .orb-spark { animation: none !important; }
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
@@ -348,8 +381,45 @@
 
     <main id="konten">
 
+    <!-- Founder header -->
+    <section id="profil" class="founder" aria-labelledby="founder-judul">
+        <div class="founder-media">
+            <img class="founder-img" src="./assets/header-founder.jpg" srcset="./assets/header-founder-1200.jpg 1200w, ./assets/header-founder.jpg 1983w" sizes="100vw"
+                 width="1983" height="793" fetchpriority="high" decoding="async" alt="Zulnan, Founder Nexamind.ai, di meja kerjanya">
+            <span class="founder-sheen" aria-hidden="true"></span>
+        </div>
+        <div class="relative w-full max-w-6xl mx-auto px-5 sm:px-8">
+            <div class="founder-copy">
+                <p class="intro founder-eyebrow" style="--d: 80ms"><span class="live" aria-hidden="true"></span>Founder Nexamind.ai &middot; Digipreneur</p>
+                <h2 id="founder-judul" class="intro mt-6 text-4xl sm:text-5xl xl:text-[3.5rem] font-bold tracking-[-0.03em] leading-[1.08] text-ink text-balance" style="--d: 180ms">
+                    Zulnan
+                    <span class="block mt-2 text-2xl sm:text-3xl xl:text-[2.1rem] leading-[1.2] font-semibold tracking-[-0.02em]"><span class="text-gradient">Edukasi &amp; bisnis digital</span> berbasis AI.</span>
+                </h2>
+                <p class="intro mt-5 text-base sm:text-lg leading-relaxed text-slate-600 max-w-xl" style="--d: 300ms">
+                    Pendiri Nexamind.ai yang mengkurasi 700+ produk digital edukasi dan mengembangkan solusi AI siap pakai, agar orang tua, guru, dan kreator bisa belajar lebih menyenangkan dan berkarya lebih produktif.
+                </p>
+                <ul class="intro mt-6 flex flex-wrap gap-2" style="--d: 400ms" aria-label="Bidang fokus">
+                    <li class="founder-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg>Edukasi Anak</li>
+                    <li class="founder-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>Tools AI</li>
+                    <li class="founder-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M2 13v2M22 13v2"/></svg>AI Agent Automation</li>
+                </ul>
+                <div class="intro mt-8 flex flex-wrap items-center gap-3" style="--d: 500ms">
+                    <a href="#produk" data-magnetic class="shine group inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-ink text-white font-semibold hover:bg-slate-800 shadow-lift transition-colors duration-200">
+                        Lihat Produk
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                    </a>
+                    <a href="#tentang" class="inline-flex items-center justify-center h-12 px-6 rounded-full bg-white/90 text-ink font-semibold border border-slate-900/10 hover:border-slate-900/20 hover:bg-white transition-colors duration-200">Kenali Saya</a>
+                    <span class="flex items-center gap-2 sm:ml-2">
+                        <a href="https://www.instagram.com/zfahrizan/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @zfahrizan" class="founder-social"><svg class="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" /></svg></a>
+                        <a href="https://www.tiktok.com/@zulnandigipreneur" target="_blank" rel="noopener noreferrer" aria-label="TikTok @zulnandigipreneur" class="founder-social"><svg class="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48z"/></svg></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Hero -->
-    <section id="hero" class="hero relative pt-36 pb-12 md:pt-48 md:pb-16 overflow-hidden">
+    <section id="hero" class="hero relative pt-20 pb-12 md:pt-28 md:pb-16 overflow-hidden">
         <div class="absolute inset-0 backdrop-grid pointer-events-none" aria-hidden="true"></div>
         <div class="hero-spot" aria-hidden="true"></div>
         <div class="absolute -top-40 left-1/2 -translate-x-[85%] w-[600px] h-[600px] rounded-full bg-brand-300/30 blur-[120px] pointer-events-none" aria-hidden="true"></div>
@@ -1106,9 +1176,16 @@
             if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => e.isIntersecting ? start() : stop()).observe(canvas); else start();
             document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
             document.querySelectorAll('.infinity-dot').forEach((d, i) => { d.style.animationDuration = `${3 + i}s`; d.style.animationDelay = `${i * .5}s`; });
-            letters.forEach((word, w) => word.forEach((l, j) =>
-                animate(l, { y: [100, 0], opacity: [0, 1] }, { type: 'spring', stiffness: 150, damping: 25, delay: .15 + w * .1 + j * .03 })));
-            if (line) animate(line, { scaleX: [0, 1] }, { delay: 1, duration: 1.5, ease: 'easeOut' });
+            const play = () => {
+                letters.forEach((word, w) => word.forEach((l, j) =>
+                    animate(l, { y: [100, 0], opacity: [0, 1] }, { type: 'spring', stiffness: 150, damping: 25, delay: .15 + w * .1 + j * .03 })));
+                if (line) animate(line, { scaleX: [0, 1] }, { delay: 1, duration: 1.5, ease: 'easeOut' });
+            };
+            const head = document.getElementById('hero-letters');
+            if ('IntersectionObserver' in window) {
+                const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); play(); } }, { threshold: .3 });
+                io.observe(head);
+            } else play();
         });
     </script>
 
